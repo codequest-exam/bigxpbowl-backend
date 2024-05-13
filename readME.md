@@ -1,2 +1,2 @@
 kan jeg committe?
-ja 
+nej
