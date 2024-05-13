@@ -1,1 +1,2 @@
 kan jeg committe?
+ja 
