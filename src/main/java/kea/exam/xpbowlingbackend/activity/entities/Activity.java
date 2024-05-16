@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -16,8 +17,8 @@ public class Activity {
     @Id
     @GeneratedValue
     private int id;
-    private String startTime;
-    private String endTime;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private LocalDate date;
 
     @ManyToOne
@@ -26,7 +27,7 @@ public class Activity {
     @ManyToMany
     private List<Bookable> bookables;
 
-    public Activity(ActivityType activityType, String startTime, String endTime, LocalDate date , List<Bookable> bookables) {
+    public Activity(ActivityType activityType, LocalTime startTime, LocalTime endTime, LocalDate date , List<Bookable> bookables) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.date = date;

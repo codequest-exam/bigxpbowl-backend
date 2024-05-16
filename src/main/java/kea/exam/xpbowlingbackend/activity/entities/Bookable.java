@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
- @Inheritance(strategy =  InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy =  InheritanceType.TABLE_PER_CLASS)
 public abstract class Bookable {
     @GeneratedValue
     @Id

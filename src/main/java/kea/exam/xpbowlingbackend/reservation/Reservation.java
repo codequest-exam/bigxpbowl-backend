@@ -15,13 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Reservation {
-    @Id
-    @GeneratedValue
-    private int id;
-    private String phoneNumber;
-    private String name;
-    private int particpants;
+public class Reservation extends BookingDetails {
 
     @OneToMany
     private List<Activity> activities;

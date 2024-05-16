@@ -8,16 +8,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
-public class RecurringBowlingReservation {
-    @Id
-    @GeneratedValue
-    private int id;
+public class RecurringBowlingReservation extends BookingDetails {
+
     @ManyToOne
     private BowlingLane bowlingLane;
 
@@ -27,4 +26,13 @@ public class RecurringBowlingReservation {
     private LocalTime startTime;
     private LocalTime endTime;
 
+    public RecurringBowlingReservation(BowlingLane bowlingLane, LocalTime startTime, LocalTime endTime, DayOfWeek dayOfWeek, String number, String name, int i) {
+        this.bowlingLane = bowlingLane;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.dayOfWeek = dayOfWeek;
+        this.phoneNumber = number;
+        this.name = name;
+        this.particpants = i;
+    }
 }
