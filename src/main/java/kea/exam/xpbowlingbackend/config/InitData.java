@@ -2,6 +2,7 @@ package kea.exam.xpbowlingbackend.config;
 
 import kea.exam.xpbowlingbackend.activity.entities.*;
 import kea.exam.xpbowlingbackend.activity.repositories.*;
+import kea.exam.xpbowlingbackend.reservation.RecurringBowlingReservationRepository;
 import kea.exam.xpbowlingbackend.reservation.Reservation;
 import kea.exam.xpbowlingbackend.reservation.ReservationRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -20,6 +21,10 @@ public class InitData implements CommandLineRunner {
     private final ActivityRepository activityRepository;
     private final ReservationRepository reservationRepository;
     private final DiningTableRepository diningTableRepository;
+    
+    private final RecurringBowlingReservationRepository recurringBowlingReservationRepository;
+
+    private final CompetitionDayRepository competitionDayRepository;
     private ActivityType bowling;
     private ActivityType airhockey;
     private ActivityType dining;
@@ -28,23 +33,34 @@ public class InitData implements CommandLineRunner {
     private final List<DiningTable> diningTables = new ArrayList<>();
     private final List<Activity> activities = new ArrayList<>();
 
-    public InitData(ReservationRepository reservationRepository, BowlingLaneRepository bowlingLaneRepository, ActivityTypeRepository activityTypeRepository, AirhockeyTableRepository airhockeyTableRepository, ActivityRepository activityRepository, DiningTableRepository diningTableRepository) {
+    public InitData(CompetitionDayRepository competitionDayRepository, RecurringBowlingReservationRepository recurringBowlingReservationRepository, ReservationRepository reservationRepository, BowlingLaneRepository bowlingLaneRepository, ActivityTypeRepository activityTypeRepository, AirhockeyTableRepository airhockeyTableRepository, ActivityRepository activityRepository, DiningTableRepository diningTableRepository) {
         this.reservationRepository = reservationRepository;
         this.bowlingLaneRepository = bowlingLaneRepository;
         this.activityTypeRepository = activityTypeRepository;
         this.airhockeyTableRepository = airhockeyTableRepository;
         this.activityRepository = activityRepository;
         this.diningTableRepository = diningTableRepository;
+        this.recurringBowlingReservationRepository = recurringBowlingReservationRepository;
+        this.competitionDayRepository = competitionDayRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
+        // TODO: Add init data to all repositories
         initTypes();
         initDiningTables();
         initAirhockeyTables();
         initBowlingLanes();
+        initCompetitionDays();
+        initRecurringReservations();
         initActivities();
         initReservations();
+    }
+
+    private void initCompetitionDays() {
+    }
+
+    private void initRecurringReservations() {
     }
 
     private void initTypes() {
@@ -64,12 +80,11 @@ public class InitData implements CommandLineRunner {
     }
 
     private void initAirhockeyTables() {
-        AirhockeyTable airhockeyTable = airhockeyTableRepository.save(new AirhockeyTable(airhockey, false, 1));
-
-        var tables = airhockeyTableRepository.findAll();
-        for (AirhockeyTable table : tables) {
-            System.out.println(table.getId());
+        List<AirhockeyTable> tempTables = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            tempTables.add(new AirhockeyTable(airhockey, false, i + 1));
         }
+        airhockeyTables.addAll(airhockeyTableRepository.saveAll(tempTables));
     }
 
     private void initDiningTables() {

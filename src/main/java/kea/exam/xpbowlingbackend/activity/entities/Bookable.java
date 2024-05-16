@@ -1,7 +1,6 @@
 package kea.exam.xpbowlingbackend.activity.entities;
 
 import jakarta.persistence.*;
-import kea.exam.xpbowlingbackend.activity.entities.ActivityType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
