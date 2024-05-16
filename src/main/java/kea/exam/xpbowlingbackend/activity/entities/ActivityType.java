@@ -1,4 +1,4 @@
-package kea.exam.xpbowlingbackend.activity;
+package kea.exam.xpbowlingbackend.activity.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,10 +14,7 @@ import lombok.Setter;
 
 public class ActivityType {
     @Id
-//    @GeneratedValue
-//    private int id;
     private String name;
-
     public ActivityType(String name) {
         this.name = name;
     }

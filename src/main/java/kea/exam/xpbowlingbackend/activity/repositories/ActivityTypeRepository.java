@@ -1,7 +1,7 @@
 package kea.exam.xpbowlingbackend.activity.repositories;
 
-import kea.exam.xpbowlingbackend.activity.ActivityType;
+import kea.exam.xpbowlingbackend.activity.entities.ActivityType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ActivityTypeRepository extends JpaRepository<ActivityType, Integer> {
+public interface ActivityTypeRepository extends JpaRepository<ActivityType, String> {
 }

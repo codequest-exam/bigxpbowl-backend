@@ -1,7 +1,7 @@
-package kea.exam.xpbowlingbackend.activity;
+package kea.exam.xpbowlingbackend.activity.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import kea.exam.xpbowlingbackend.activity.entities.ActivityType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Inheritance(strategy =  InheritanceType.TABLE_PER_CLASS)
+ @Inheritance(strategy =  InheritanceType.TABLE_PER_CLASS)
 public abstract class Bookable {
     @GeneratedValue
     @Id
