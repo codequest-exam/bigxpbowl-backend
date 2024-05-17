@@ -13,6 +13,7 @@ import lombok.Setter;
 public class DiningTable extends Bookable {
     private int tableNumber;
 
+
     //    public DiningTable(ActivityType activityType, boolean maintenance, int tableNumber){
 //        super(activityType, maintenance);
 //        this.tableNumber = tableNumber;

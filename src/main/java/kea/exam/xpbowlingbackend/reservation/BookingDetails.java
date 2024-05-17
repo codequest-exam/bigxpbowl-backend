@@ -16,5 +16,5 @@ abstract public class BookingDetails {
 
     protected String phoneNumber;
     protected String name;
-    protected int particpants;
+    protected int participants;
 }

@@ -1,12 +1,11 @@
 package kea.exam.xpbowlingbackend.activity.entities;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -23,16 +22,24 @@ public class Activity {
     private LocalTime startTime;
     private LocalTime endTime;
     private LocalDate date;
-
-    private String activityType;
-    @ManyToMany
+    @Enumerated(EnumType.STRING)
+    private ActivityType activityType;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JsonTypeInfo(
+            use = JsonTypeInfo.Id.NAME,
+            property = "activityType")
+    @JsonSubTypes({
+            @JsonSubTypes.Type(value = BowlingLane.class, name = "BOWLING"),
+            @JsonSubTypes.Type(value = DiningTable.class, name = "DINING"),
+            @JsonSubTypes.Type(value = AirhockeyTable.class, name = "AIRHOCKEY")
+    })
     private List<Bookable> bookables;
 
     public Activity(ActivityType activityType, LocalTime startTime, LocalTime endTime, LocalDate date , List<Bookable> bookables) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.date = date;
-        this.activityType = activityType.getName();
+        this.activityType = activityType;
         this.bookables = bookables;
     }
 

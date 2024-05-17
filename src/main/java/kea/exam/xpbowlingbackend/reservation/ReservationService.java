@@ -7,6 +7,7 @@ import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservati
 import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservationRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,8 +34,17 @@ public class ReservationService {
     }
 
     public Reservation createReservation(Reservation reservation) {
+        System.out.println("saving reservations");
         List<Activity> activities = reservation.getActivities();
         List<Activity> savedActivities = activityService.saveAll(activities);
+
+        System.out.println("SAVED ACTIVITIES");
+        System.out.println(savedActivities);
+
+//        List<Activity> savedActivities = new ArrayList<>();
+//        for (Activity activity : activities) {
+//            System.out.println(activity.getActivityType());
+//        }
         reservation.setActivities(savedActivities);
         return reservationRepository.save(reservation);
     }

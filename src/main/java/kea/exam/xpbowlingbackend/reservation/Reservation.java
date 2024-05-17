@@ -21,7 +21,7 @@ public class Reservation extends BookingDetails {
     public Reservation(String phoneNumber, String name, int particpants, List<Activity> activities) {
         this.phoneNumber = phoneNumber;
         this.name = name;
-        this.particpants = particpants;
+        this.participants = particpants;
         this.activities = activities;
     }
 
@@ -31,7 +31,7 @@ public class Reservation extends BookingDetails {
                 "activities=" + activities +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", name='" + name + '\'' +
-                ", particpants=" + particpants +
+                ", particpants=" + participants +
                 '}';
     }
 }

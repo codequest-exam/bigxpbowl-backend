@@ -20,16 +20,16 @@ public class InitData implements CommandLineRunner {
 
     private final BowlingLaneRepository bowlingLaneRepository;
     private final AirhockeyTableRepository airhockeyTableRepository;
-    private final ActivityTypeRepository activityTypeRepository;
+    //private final ActivityTypeRepository activityTypeRepository;
     private final ActivityRepository activityRepository;
     private final ReservationRepository reservationRepository;
     private final DiningTableRepository diningTableRepository;
     private final RecurringBowlingReservationRepository recurringBowlingReservationRepository;
     private final CompetitionDayRepository competitionDayRepository;
 
-    private ActivityType bowling;
-    private ActivityType airhockey;
-    private ActivityType dining;
+    private ActivityType bowling = ActivityType.BOWLING;
+    private ActivityType airhockey = ActivityType.AIRHOCKEY;
+    private ActivityType dining = ActivityType.DINING;
 
     private final List<BowlingLane> bowlingLanes = new ArrayList<>();
     private final List<AirhockeyTable> airhockeyTables = new ArrayList<>();
@@ -39,10 +39,10 @@ public class InitData implements CommandLineRunner {
     private final List<Activity> diningActivities = new ArrayList<>();
 
 
-    public InitData(CompetitionDayRepository competitionDayRepository, RecurringBowlingReservationRepository recurringBowlingReservationRepository, ReservationRepository reservationRepository, BowlingLaneRepository bowlingLaneRepository, ActivityTypeRepository activityTypeRepository, AirhockeyTableRepository airhockeyTableRepository, ActivityRepository activityRepository, DiningTableRepository diningTableRepository) {
+    public InitData(CompetitionDayRepository competitionDayRepository, RecurringBowlingReservationRepository recurringBowlingReservationRepository, ReservationRepository reservationRepository, BowlingLaneRepository bowlingLaneRepository, AirhockeyTableRepository airhockeyTableRepository, ActivityRepository activityRepository, DiningTableRepository diningTableRepository) {
         this.reservationRepository = reservationRepository;
         this.bowlingLaneRepository = bowlingLaneRepository;
-        this.activityTypeRepository = activityTypeRepository;
+       // this.activityTypeRepository = activityTypeRepository;
         this.airhockeyTableRepository = airhockeyTableRepository;
         this.activityRepository = activityRepository;
         this.diningTableRepository = diningTableRepository;
@@ -87,9 +87,9 @@ public class InitData implements CommandLineRunner {
     }
 
     private void initTypes() {
-        bowling = activityTypeRepository.save(new ActivityType("bowling"));
-        airhockey = activityTypeRepository.save(new ActivityType("airhockey"));
-        dining = activityTypeRepository.save(new ActivityType("dining"));
+//        bowling = activityTypeRepository.save(new ActivityType("bowling"));
+//        airhockey = activityTypeRepository.save(new ActivityType("airhockey"));
+//        dining = activityTypeRepository.save(new ActivityType("dining"));
     }
 
     private void initBowlingLanes() {

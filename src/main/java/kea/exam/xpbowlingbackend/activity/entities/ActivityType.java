@@ -6,15 +6,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@NoArgsConstructor
-@Getter
-@Setter
+//@Entity
+//@NoArgsConstructor
+//@Getter
+public enum ActivityType {
+    BOWLING, DINING, AIRHOCKEY
 
-public class ActivityType {
-    @Id
-    private String name;
-    public ActivityType(String name) {
-        this.name = name;
-    }
+//    @Id
+//    private String name;
+//    public ActivityType(String name) {
+//        this.name = name;
+//    }
 }

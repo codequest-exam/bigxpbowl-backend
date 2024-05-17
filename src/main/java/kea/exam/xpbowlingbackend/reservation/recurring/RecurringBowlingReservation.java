@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
@@ -34,6 +33,6 @@ public class RecurringBowlingReservation extends BookingDetails {
         this.dayOfWeek = dayOfWeek;
         this.phoneNumber = number;
         this.name = name;
-        this.particpants = i;
+        this.participants = i;
     }
 }

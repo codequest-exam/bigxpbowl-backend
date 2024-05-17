@@ -82,7 +82,7 @@ class ReservationServiceTest {
 //        private List<Bookable> bookables;
 
         Reservation reservation = new Reservation("1234", "name", 4, List.of(
-                new Activity(new ActivityType("bowling"), LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 12, 24),List.of(
+                new Activity(ActivityType.BOWLING, LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 12, 24),List.of(
                         new BowlingLane(false, true, 25))
                 )
 
