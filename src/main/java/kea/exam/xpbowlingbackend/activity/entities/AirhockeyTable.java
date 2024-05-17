@@ -13,7 +13,8 @@ public class AirhockeyTable extends Bookable {
     private int tableNumber;
     public AirhockeyTable(ActivityType activityType, boolean maintenance, int tableNumber){
 
-        super(activityType, maintenance);
+        super( maintenance);
+        //super(activityType, maintenance);
         this.tableNumber = tableNumber;
     }
 }

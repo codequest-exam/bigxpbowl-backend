@@ -1,8 +1,6 @@
 package kea.exam.xpbowlingbackend.reservation;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import kea.exam.xpbowlingbackend.activity.entities.Activity;
 import lombok.Getter;

@@ -1,8 +1,9 @@
-package kea.exam.xpbowlingbackend.reservation;
+package kea.exam.xpbowlingbackend.reservation.recurring;
 
 // RecurringReservation.java
 import jakarta.persistence.*;
 import kea.exam.xpbowlingbackend.activity.entities.BowlingLane;
+import kea.exam.xpbowlingbackend.reservation.BookingDetails;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

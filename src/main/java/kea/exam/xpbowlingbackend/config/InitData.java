@@ -2,8 +2,8 @@ package kea.exam.xpbowlingbackend.config;
 
 import kea.exam.xpbowlingbackend.activity.entities.*;
 import kea.exam.xpbowlingbackend.activity.repositories.*;
-import kea.exam.xpbowlingbackend.reservation.RecurringBowlingReservation;
-import kea.exam.xpbowlingbackend.reservation.RecurringBowlingReservationRepository;
+import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservation;
+import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservationRepository;
 import kea.exam.xpbowlingbackend.reservation.Reservation;
 import kea.exam.xpbowlingbackend.reservation.ReservationRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -24,14 +24,14 @@ public class InitData implements CommandLineRunner {
     private final ActivityRepository activityRepository;
     private final ReservationRepository reservationRepository;
     private final DiningTableRepository diningTableRepository;
-    
     private final RecurringBowlingReservationRepository recurringBowlingReservationRepository;
-
     private final CompetitionDayRepository competitionDayRepository;
+
     private ActivityType bowling;
     private ActivityType airhockey;
     private ActivityType dining;
-    private  List<BowlingLane> bowlingLanes = new ArrayList<>();
+
+    private final List<BowlingLane> bowlingLanes = new ArrayList<>();
     private final List<AirhockeyTable> airhockeyTables = new ArrayList<>();
     private final List<DiningTable> diningTables = new ArrayList<>();
     private final List<Activity> bowlingActivities = new ArrayList<>();
