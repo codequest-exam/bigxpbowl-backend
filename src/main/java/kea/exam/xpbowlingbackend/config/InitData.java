@@ -39,7 +39,6 @@ public class InitData implements CommandLineRunner {
     private final List<Activity> diningActivities = new ArrayList<>();
 
 
-
     public InitData(CompetitionDayRepository competitionDayRepository, RecurringBowlingReservationRepository recurringBowlingReservationRepository, ReservationRepository reservationRepository, BowlingLaneRepository bowlingLaneRepository, ActivityTypeRepository activityTypeRepository, AirhockeyTableRepository airhockeyTableRepository, ActivityRepository activityRepository, DiningTableRepository diningTableRepository) {
         this.reservationRepository = reservationRepository;
         this.bowlingLaneRepository = bowlingLaneRepository;
@@ -96,7 +95,7 @@ public class InitData implements CommandLineRunner {
     private void initBowlingLanes() {
         List<BowlingLane> tempLanes = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
-            tempLanes.add(new BowlingLane(bowling, false, i > 19, false, i + 1));
+            tempLanes.add(new BowlingLane(false, i > 19, i + 1));
         }
         bowlingLanes.addAll(bowlingLaneRepository.saveAll(tempLanes));
     }
@@ -125,10 +124,18 @@ public class InitData implements CommandLineRunner {
                 tempReservations.add(new Reservation("12345678", "John Doe", 4, List.of(bowlingActivities.get(i), airhockeyActivities.get(i), diningActivities.get(i))));
             } else if (diningActivities.size() > i) {
                 tempReservations.add(new Reservation("12345678", "John Doe", 4, List.of(bowlingActivities.get(i), diningActivities.get(i))));
-            } else if (bowlingActivities.size() > i) {
+            }
+            else {
                 tempReservations.add(new Reservation("12345678", "John Doe", 4, List.of(bowlingActivities.get(i))));
             }
         }
+//        int iterationsLeft =bowlingActivities.size() - tempReservations.size();
+//        int difference = bowlingActivities.size() - iterationsLeft;
+//        for (int i = 0; i < iterationsLeft/2; i++) {
+//           if (iterationsLeft/2 - 1 > i) {
+//                tempReservations.add(new Reservation("12345678", "John Doe", 4, List.of(bowlingActivities.get(i+difference), bowlingActivities.get(i+difference + i +1 +difference))));
+//            }
+//        }
         reservationRepository.saveAll(tempReservations);
     }
 
@@ -139,19 +146,19 @@ public class InitData implements CommandLineRunner {
 
         for (int i = 0; i < 24; i++) {
             for (int j = 0; j < 6; j++) {
-                tempBowling.add(new Activity(bowling, LocalTime.of(9 + j, 0), LocalTime.of(10 + j, 0), LocalDate.of(2024, 5,1 + i), List.of(bowlingLanes.get(i))));
+                tempBowling.add(new Activity(bowling, LocalTime.of(9 + j, 0), LocalTime.of(10 + j, 0), LocalDate.of(2024, 5, 1 + i), List.of(bowlingLanes.get(i))));
             }
         }
 
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
-                tempAirhockey.add(new Activity(airhockey, LocalTime.of(9 + j, 0), LocalTime.of(10 + j, 0), LocalDate.of(2024, 5,1 + i), List.of(airhockeyTables.get(i))));
+                tempAirhockey.add(new Activity(airhockey, LocalTime.of(9 + j, 0), LocalTime.of(10 + j, 0), LocalDate.of(2024, 5, 1 + i), List.of(airhockeyTables.get(i))));
             }
         }
 
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 6; j++) {
-                tempDining.add(new Activity(dining, LocalTime.of(9 + j, 0), LocalTime.of(10 + j, 0), LocalDate.of(2024, 5,1 + i), List.of(diningTables.get(i))));
+                tempDining.add(new Activity(dining, LocalTime.of(9 + j, 0), LocalTime.of(10 + j, 0), LocalDate.of(2024, 5, 1 + i), List.of(diningTables.get(i))));
             }
         }
         bowlingActivities.addAll(activityRepository.saveAll(tempBowling));

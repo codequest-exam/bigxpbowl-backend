@@ -1,5 +1,8 @@
 package kea.exam.xpbowlingbackend.activity.entities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,9 +24,7 @@ public class Activity {
     private LocalTime endTime;
     private LocalDate date;
 
-    @ManyToOne
-    private ActivityType activityType;
-
+    private String activityType;
     @ManyToMany
     private List<Bookable> bookables;
 
@@ -31,7 +32,7 @@ public class Activity {
         this.startTime = startTime;
         this.endTime = endTime;
         this.date = date;
-        this.activityType = activityType;
+        this.activityType = activityType.getName();
         this.bookables = bookables;
     }
 

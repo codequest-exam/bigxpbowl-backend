@@ -24,4 +24,14 @@ public class Reservation extends BookingDetails {
         this.particpants = particpants;
         this.activities = activities;
     }
+
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "activities=" + activities +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", name='" + name + '\'' +
+                ", particpants=" + particpants +
+                '}';
+    }
 }

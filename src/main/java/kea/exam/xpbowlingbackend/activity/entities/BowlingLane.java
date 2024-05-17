@@ -17,19 +17,12 @@ public class BowlingLane extends Bookable {
     private boolean childFriendly;
     private int laneNumber;
 
-
-    public BowlingLane(ActivityType activityType, boolean maintenance, boolean childFriendly, boolean clubLane, int laneNumber ) {
-        //this.setActivityType(activityType);
+    public BowlingLane(boolean maintenance, boolean childFriendly, int laneNumber ) {
         this.setMaintenance(maintenance);
         this.childFriendly = childFriendly;
 
         this.laneNumber = laneNumber;
     }
 
-    public BowlingLane(boolean maintenance, boolean childFriendly, boolean clubLane, int laneNumber ) {
-        this.setMaintenance(maintenance);
-        this.childFriendly = childFriendly;
-        this.laneNumber = laneNumber;
-    }
 
 }

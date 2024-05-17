@@ -14,10 +14,10 @@ public abstract class Bookable {
     @GeneratedValue
     @Id
     private int id;
-//    @ManyToOne
-//    private ActivityType activityType;
     private boolean maintenance;
 
+    //    @ManyToOne
+//    private ActivityType activityType;
     public Bookable( boolean maintenance) {
         //this.setActivityType(activityType);
         this.setMaintenance(maintenance);
