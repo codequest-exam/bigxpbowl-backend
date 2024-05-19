@@ -2,6 +2,7 @@ package kea.exam.xpbowlingbackend.reservation;
 
 
 import kea.exam.xpbowlingbackend.activity.ActivityService;
+import kea.exam.xpbowlingbackend.activity.dtos.ActivityResponseDto;
 import kea.exam.xpbowlingbackend.activity.entities.Activity;
 import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservation;
 import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservationRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservationService {
@@ -66,5 +68,30 @@ public class ReservationService {
 
     public void deleteReservation(int id) {
         reservationRepository.deleteById(id);
+    }
+
+
+    public List<ActivityResponseDto> toActivityResponseDto(List<Activity> activities) {
+        return activities.stream()
+                .map(this::toActivityResponseDto)
+                .toList();
+    }
+
+    private ActivityResponseDto toActivityResponseDto(Activity activity) {
+        ActivityResponseDto dto = new ActivityResponseDto();
+        dto.setId(activity.getId());
+        dto.setStartTime(activity.getStartTime());
+        dto.setEndTime(activity.getEndTime());
+        dto.setDate(activity.getDate());
+        if (activity.getAirhockeyTables() != null) {
+            dto.setAirhockeyTables(activity.getAirhockeyTables());
+        }
+        if (activity.getBowlingLanes() != null) {
+            dto.setBowlingLanes(activity.getBowlingLanes());
+        }
+        if (activity.getDiningTables() != null) {
+            dto.setDiningTables(activity.getDiningTables());
+        }
+        return dto;
     }
 }

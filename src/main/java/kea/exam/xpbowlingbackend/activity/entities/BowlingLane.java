@@ -15,13 +15,17 @@ import java.util.List;
 @Getter
 @Setter
 
-public class BowlingLane extends Bookable {
-    private boolean childFriendly;
+public class BowlingLane {
+    @Id
     private int laneNumber;
-    private ActivityType activityType = ActivityType.BOWLING;
+    private boolean maintenance;
+
+    private boolean childFriendly;
+
+
 
     public BowlingLane(boolean maintenance, boolean childFriendly, int laneNumber ) {
-        this.setMaintenance(maintenance);
+        this.maintenance =maintenance;
         this.childFriendly = childFriendly;
 
         this.laneNumber = laneNumber;

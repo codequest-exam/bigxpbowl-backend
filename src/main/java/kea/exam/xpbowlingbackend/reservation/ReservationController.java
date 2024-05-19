@@ -1,5 +1,6 @@
 package kea.exam.xpbowlingbackend.reservation;
 
+import kea.exam.xpbowlingbackend.activity.dtos.ActivityResponseDto;
 import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservation;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
@@ -43,8 +44,11 @@ public class ReservationController {
     }
 
     @PostMapping
-    public Reservation createStandardReservation(@RequestBody Reservation reservation){
-        return reservationService.createReservation(reservation);
+    public ResponseEntity<Reservation> createStandardReservation(@RequestBody Reservation reservation){
+        return ResponseEntity.status(HttpStatus.CREATED).body(reservationService.createReservation(reservation)) ;
+//        Reservation newRes = reservationService.createReservation(reservation);
+//        List<ActivityResponseDto> activityDtos = reservationService.toActivityResponseDto(newRes.getActivities());
+//        return new ReservationResponseDto(newRes.getId(), newRes.getPhoneNumber(), newRes.getName(), newRes.getParticipants(), activityDtos);
     }
 
     @PostMapping("/recurring")

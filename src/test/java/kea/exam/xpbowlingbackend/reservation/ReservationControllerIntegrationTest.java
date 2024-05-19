@@ -1,7 +1,6 @@
 package kea.exam.xpbowlingbackend.reservation;
 
 import kea.exam.xpbowlingbackend.activity.entities.Activity;
-import kea.exam.xpbowlingbackend.activity.entities.ActivityType;
 import kea.exam.xpbowlingbackend.activity.entities.BowlingLane;
 import kea.exam.xpbowlingbackend.activity.repositories.ActivityRepository;
 
@@ -42,11 +41,11 @@ public class ReservationControllerIntegrationTest {
                             "participants": 1,
                             "activities": [
                                 {
-                                    "activityType": "bowling",
+                                   
                                     "startTime": "12:00",
                                     "endTime": "13:00",
                                     "date": "2021-12-24",
-                                    "bookables": [
+                                    "bowlingLanes": [
                                         {
                                             "laneNumber": 1
                                         }
@@ -60,33 +59,24 @@ public class ReservationControllerIntegrationTest {
                 .expectBody().json("""
                                         {
                                         
-                                            "firstName": "Harry",
-                                            "middleName": "James",
-                                            "lastName": "Potter",
-                                            "fullName": "Harry James Potter",
-                                            "house": "Gryffindor",
-                                            "schoolYear": 1
+                            "name": "Harry",
+                            "phoneNumber": "12345678",
+                            "participants": 1,
+                            "activities": [
+                                {
+                            
+                                    "startTime": "12:00:00",
+                                    "endTime": "13:00:00",
+                                    "date": "2021-12-24",
+                                    "bowlingLanes": [
+                                        {
+                                            "laneNumber": 1
+                                        }
+                                     ]
+                                    }
+                                ]
                                         }
                         """);
-        // assert
-//        Reservation reservation = new Reservation("1234", "name", 4, List.of(
-//                new Activity(Objects.requireNonNull(activityTypeRepository.findById("bowling").orElse(null)), LocalTime.of(12, 0), LocalTime.of(13, 0),
-//                        LocalDate.of(2021, 12, 24), bowlingLaneRepository.findByLaneNumber(1)
-//                )));
-//
-//        // act
-//        long preActivityCount = activityRepository.count();
-//        Reservation newReservation = reservationController.createStandardReservation(reservation);
-//
-//        // assert
-//
-//        newReservation.equals()
-//
-//        System.out.println(newReservation);
-//        assert newReservation != null;
-//        assert newReservation.getId() > 0;
-//        assert activityRepository.count() == preActivityCount + 1;
-
 
     }
 }

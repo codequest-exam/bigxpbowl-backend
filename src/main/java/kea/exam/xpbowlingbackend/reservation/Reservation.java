@@ -1,5 +1,6 @@
 package kea.exam.xpbowlingbackend.reservation;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import kea.exam.xpbowlingbackend.activity.entities.Activity;
@@ -13,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Reservation extends BookingDetails {
 
     @OneToMany

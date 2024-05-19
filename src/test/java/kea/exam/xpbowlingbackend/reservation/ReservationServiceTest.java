@@ -3,8 +3,7 @@ package kea.exam.xpbowlingbackend.reservation;
 import jakarta.persistence.ManyToMany;
 import kea.exam.xpbowlingbackend.activity.ActivityService;
 import kea.exam.xpbowlingbackend.activity.entities.Activity;
-import kea.exam.xpbowlingbackend.activity.entities.ActivityType;
-import kea.exam.xpbowlingbackend.activity.entities.Bookable;
+
 import kea.exam.xpbowlingbackend.activity.entities.BowlingLane;
 import kea.exam.xpbowlingbackend.reservation.Reservation;
 import kea.exam.xpbowlingbackend.reservation.ReservationRepository;
@@ -72,23 +71,12 @@ class ReservationServiceTest {
 
     @Test
     void createReservationSavesAndReturnsReservation() {
-//        private int id;
-//        private LocalTime startTime;
-//        private LocalTime endTime;
-//        private LocalDate date;
-//
-//        private String activityType;
-//        @ManyToMany
-//        private List<Bookable> bookables;
+
 
         Reservation reservation = new Reservation("1234", "name", 4, List.of(
-                new Activity(ActivityType.BOWLING, LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 12, 24),List.of(
-                        new BowlingLane(false, true, 25))
+                new Activity( LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 12, 24),List.of(
+                        new BowlingLane(false, true, 25)), null, null
                 )
-
-//        this.setMaintenance(maintenance);
-//        this.childFriendly = childFriendly;
-//        this.laneNumber = laneNumber;
 
         ));
         when(reservationRepository.save(reservation)).thenReturn(reservation);

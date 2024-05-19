@@ -1,11 +1,10 @@
 package kea.exam.xpbowlingbackend.activity.entities;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -15,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Activity {
     @Id
     @GeneratedValue
@@ -22,25 +22,40 @@ public class Activity {
     private LocalTime startTime;
     private LocalTime endTime;
     private LocalDate date;
-    @Enumerated(EnumType.STRING)
-    private ActivityType activityType;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JsonTypeInfo(
-            use = JsonTypeInfo.Id.NAME,
-            property = "activityType")
-    @JsonSubTypes({
-            @JsonSubTypes.Type(value = BowlingLane.class, name = "BOWLING"),
-            @JsonSubTypes.Type(value = DiningTable.class, name = "DINING"),
-            @JsonSubTypes.Type(value = AirhockeyTable.class, name = "AIRHOCKEY")
-    })
-    private List<Bookable> bookables;
 
-    public Activity(ActivityType activityType, LocalTime startTime, LocalTime endTime, LocalDate date , List<Bookable> bookables) {
+//    @Enumerated(EnumType.STRING)
+//    private ActivityType activityType;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<BowlingLane> bowlingLanes;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<AirhockeyTable> airhockeyTables;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<DiningTable> diningTables;
+
+
+    public Activity(LocalTime startTime, LocalTime endTime, LocalDate date, List<BowlingLane> bowlingLanes, List<DiningTable> diningTables, List<AirhockeyTable> airhockeyTables) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.date = date;
-        this.activityType = activityType;
-        this.bookables = bookables;
+
+        this.bowlingLanes = bowlingLanes;
+        this.airhockeyTables = airhockeyTables;
+        this.diningTables = diningTables;
+    }
+
+//    public Activity(LocalTime startTime, LocalTime endTime, LocalDate date, List<BowlingLane> bowlingLanes) {
+//        this(startTime, endTime, date, bowlingLanes, null, null);
+//    }
+//
+//    public Activity(LocalTime startTime, LocalTime endTime, LocalDate date, List<DiningTable> diningTables) {
+//        this(startTime, endTime, date, null, diningTables, null);
+//    }
+//    public Activity(LocalTime startTime, LocalTime endTime, LocalDate date,  List<AirhockeyTable> airhockeyTables) {
+//        this(startTime, endTime, date, null, null, airhockeyTables);
+//    }
+    public Activity(LocalTime startTime, LocalTime endTime, LocalDate date) {
+        this(startTime, endTime, date, null, null, null);
     }
 
     @Override
@@ -50,8 +65,9 @@ public class Activity {
                 ", startTime='" + startTime + '\'' +
                 ", endTime='" + endTime + '\'' +
                 ", date=" + date +
-                ", activityType=" + activityType +
-                ", bookables=" + bookables +
+                ", bowlingLanes=" + bowlingLanes +
+                ", airhockeyTables=" + airhockeyTables +
+                ", diningTables=" + diningTables +
                 '}';
     }
 }
