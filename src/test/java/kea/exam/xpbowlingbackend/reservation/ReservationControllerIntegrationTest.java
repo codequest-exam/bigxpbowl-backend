@@ -43,8 +43,8 @@ public class ReservationControllerIntegrationTest {
                         }
                     ]
                 }
-                """).exchange().expectStatus().isCreated().expectBody().
-                jsonPath("$.activities[0].bowlingLanes[0].laneNumber").isEqualTo(1)
+                """).exchange().expectStatus().isCreated().expectBody()
+                .jsonPath("$.activities[0].bowlingLanes[0].laneNumber").isEqualTo(1)
                 .jsonPath("$.activities[0].diningTables").doesNotExist().jsonPath("$.activities[0].airhockeyTables").doesNotExist();
     }
 
@@ -62,6 +62,11 @@ public class ReservationControllerIntegrationTest {
                             "startTime": "12:00",
                             "endTime": "13:00",
                             "date": "2021-12-24",
+                            "diningTables": [
+                                {
+                                    "tableNumber": 1
+                                }
+                            ],
                             "bowlingLanes": [
                                 {
                                     "laneNumber": 1
@@ -70,9 +75,10 @@ public class ReservationControllerIntegrationTest {
                         }
                     ]
                 }
-                """).exchange().expectStatus().isCreated().expectBody().
-                jsonPath("$.activities[0].bowlingLanes[0].laneNumber").isEqualTo(1)
-                .jsonPath("$.activities[0].diningTables").doesNotExist().jsonPath("$.activities[0].airhockeyTables").doesNotExist();
+                """).exchange().expectStatus().isCreated().expectBody()
+                .jsonPath("$.activities[0].diningTables[0].tableNumber").isEqualTo(1)
+                .jsonPath("$.activities[0].bowlingLanes[0].laneNumber").isEqualTo(1)
+                .jsonPath("$.activities[0].airhockeyTables").doesNotExist();
     }
 
 
@@ -90,16 +96,27 @@ public class ReservationControllerIntegrationTest {
                             "startTime": "12:00",
                             "endTime": "13:00",
                             "date": "2021-12-24",
+                                   "diningTables": [
+                                {
+                                    "tableNumber": 1
+                                }
+                            ],
                             "bowlingLanes": [
                                 {
                                     "laneNumber": 1
+                                }
+                            ],
+                            "airhockeyTables": [
+                                {
+                                    "tableNumber": 1
                                 }
                             ]
                         }
                     ]
                 }
-                """).exchange().expectStatus().isCreated().expectBody().
-                jsonPath("$.activities[0].bowlingLanes[0].laneNumber").isEqualTo(1)
-                .jsonPath("$.activities[0].diningTables").doesNotExist().jsonPath("$.activities[0].airhockeyTables").doesNotExist();
+                """).exchange().expectStatus().isCreated().expectBody()
+             .jsonPath("$.activities[0].diningTables[0].tableNumber").isEqualTo(1)
+                .jsonPath("$.activities[0].bowlingLanes[0].laneNumber").isEqualTo(1)
+                .jsonPath("$.activities[0].airhockeyTables[0].tableNumber").isEqualTo(1);
     }
 }

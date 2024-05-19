@@ -12,11 +12,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AirhockeyTable {
-    @GeneratedValue
+
     @Id
-    private int id;
-    private boolean maintenance;
     private int tableNumber;
+    private boolean maintenance;
+
     public AirhockeyTable(boolean maintenance, int tableNumber){
         this.maintenance = maintenance;
         this.tableNumber = tableNumber;
