@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Activity {
     @Id
     @GeneratedValue
@@ -27,11 +27,11 @@ public class Activity {
 //    private ActivityType activityType;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<BowlingLane> bowlingLanes;
+    private List<BowlingLane> bowlingLanes = null;
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<AirhockeyTable> airhockeyTables;
+    private List<AirhockeyTable> airhockeyTables = null;
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<DiningTable> diningTables;
+    private List<DiningTable> diningTables = null;
 
 
     public Activity(LocalTime startTime, LocalTime endTime, LocalDate date, List<BowlingLane> bowlingLanes, List<DiningTable> diningTables, List<AirhockeyTable> airhockeyTables) {

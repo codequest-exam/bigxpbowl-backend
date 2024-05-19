@@ -46,9 +46,7 @@ public class ReservationController {
     @PostMapping
     public ResponseEntity<Reservation> createStandardReservation(@RequestBody Reservation reservation){
         return ResponseEntity.status(HttpStatus.CREATED).body(reservationService.createReservation(reservation)) ;
-//        Reservation newRes = reservationService.createReservation(reservation);
-//        List<ActivityResponseDto> activityDtos = reservationService.toActivityResponseDto(newRes.getActivities());
-//        return new ReservationResponseDto(newRes.getId(), newRes.getPhoneNumber(), newRes.getName(), newRes.getParticipants(), activityDtos);
+
     }
 
     @PostMapping("/recurring")
