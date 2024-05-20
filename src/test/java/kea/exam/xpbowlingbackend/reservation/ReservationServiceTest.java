@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -95,14 +96,18 @@ class ReservationServiceTest {
 
     @Test
     void updateReservationReturnsUpdatedReservationWhenExists() {
-        Reservation reservation = new Reservation();
+        Reservation reservation = new Reservation("1234", "name", 4, List.of(
+                new Activity( LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 12, 24),List.of(
+                        new BowlingLane(false, true, 25)), null, null
+                )));
         when(reservationRepository.findById(1)).thenReturn(Optional.of(reservation));
         when(reservationRepository.save(reservation)).thenReturn(reservation);
 
-        Optional<Reservation> returnedReservation = reservationService.updateReservation(1, reservation);
+        Reservation updatedReservation = reservation;
+        updatedReservation.setName("new name");
+       Reservation returnedReservation = reservationService.updateReservationSpecific(1, updatedReservation);
 
-        assertTrue(returnedReservation.isPresent());
-        assertEquals(reservation, returnedReservation.get());
+        assertEquals(updatedReservation, returnedReservation);
         verify(reservationRepository, times(1)).findById(1);
         verify(reservationRepository, times(1)).save(reservation);
     }
@@ -112,9 +117,8 @@ class ReservationServiceTest {
         Reservation reservation = new Reservation();
         when(reservationRepository.findById(1)).thenReturn(Optional.empty());
 
-        Optional<Reservation> returnedReservation = reservationService.updateReservation(1, reservation);
 
-        assertFalse(returnedReservation.isPresent());
+        assertThrows(ResponseStatusException.class, () -> reservationService.updateReservationSpecific(1, reservation));
         verify(reservationRepository, times(1)).findById(1);
     }
 

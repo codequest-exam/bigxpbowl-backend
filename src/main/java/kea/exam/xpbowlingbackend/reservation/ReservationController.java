@@ -43,6 +43,11 @@ public class ReservationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(reservationService.createReservation(reservation)) ;
     }
 
+//    @PostMapping
+//    public ResponseEntity<Reservation> createStandardReservation(@RequestBody Reservation reservation){
+//        return ResponseEntity.status(HttpStatus.CREATED).body(reservationService.createReservation(reservation)) ;
+//    }
+
     @PostMapping("/specified")
     public ResponseEntity<Reservation> createSpecifiedReservation(@RequestBody Reservation reservation){
         return ResponseEntity.status(HttpStatus.CREATED).body(reservationService.createReservation(reservation, true)) ;
@@ -53,20 +58,19 @@ public class ReservationController {
         return reservationService.createRecurringReservation(recurringBowlingReservation);
     }
 
+    @PutMapping("/specified/{id}")
+    public Reservation updateReservationToSpecificLanes(@PathVariable int id, @RequestBody Reservation reservation){
+        return reservationService.updateReservationSpecific(id, reservation) ;
+    }
+
     @PutMapping("/{id}")
-    public ResponseEntity<Reservation> updateReservation(@PathVariable int id, @RequestBody Reservation reservation){
-        return ResponseEntity.of(reservationService.updateReservation(id, reservation)) ;
+    public Reservation updateStandardReservation(@PathVariable int id, @RequestBody Reservation reservation){
+        return reservationService.updateReservationGeneral(id, reservation) ;
     }
 
     @DeleteMapping("/{id}")
     public void deleteReservation(@PathVariable int id){
         reservationService.deleteReservation(id);
     }
-
-
-//    @ExceptionHandler({Throwable.class})
-//    public String handleException(){
-//        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Reservation with id " + id + " not found");
-//    }
 
 }

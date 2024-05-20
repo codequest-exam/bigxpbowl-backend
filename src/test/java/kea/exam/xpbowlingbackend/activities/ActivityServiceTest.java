@@ -61,6 +61,22 @@ public class ActivityServiceTest {
     }
 
     @Test
+    public void getActivitiesByWeek_returnsAllActivitiesAWeekAheadOfTheGivenDate() {
+        LocalDate date = LocalDate.of(2021, 12, 24);
+        List<Activity> activities = Arrays.asList(
+                new Activity( LocalTime.of(12, 0), LocalTime.of(13, 0), date),
+                new Activity( LocalTime.of(13, 0), LocalTime.of(14, 0), date),
+                new Activity( LocalTime.of(14, 0), LocalTime.of(15, 0), date.plusDays(5))
+        );
+
+        when(activityRepository.findAllByDateBetween(date, date.plusWeeks(1))).thenReturn(activities);
+
+        List<Activity> foundActivities = activityService.getActivitiesByWeek(date);
+
+        assertTrue(foundActivities.containsAll(activities));
+    }
+
+    @Test
     public void setAvailableTableOrLane_throwsError_when24OtherBowlingActivitiesExistDuringTheTimePeriod() {
 
         Activity activityToCheck = new Activity( LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 12, 24));

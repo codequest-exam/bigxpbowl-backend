@@ -66,6 +66,9 @@ public class ActivityService {
         System.out.println(activitiesOnTheDay.size());
 
         for (Activity activity : activitiesOnTheDay) {
+            if (activityToCheck.getId() == activityToCheck.getId()) {
+                continue;
+            }
             countIfOverlap(activityToCheck, activity);
         }
 
@@ -157,6 +160,15 @@ public class ActivityService {
 
         List<Activity> activitiesOnTheDay = activityRepository.findAllByDate(incoming.getDate());
         for (Activity existingActivity : activitiesOnTheDay) {
+            if (existingActivity.getId() == incoming.getId()) {
+                System.out.println("same id");
+                continue;
+            }
+            else {
+                System.out.println("not same id");
+                System.out.println("existing activity id: " + existingActivity.getId());
+                System.out.println("incoming activity id: " + incoming.getId());
+            }
             if (existingActivity.getBowlingLanes() != null && incoming.getBowlingLanes() != null) {
                 for (BowlingLane bowlingLane : incoming.getBowlingLanes()) {
                     if (bowlingLaneMatch(bowlingLane, existingActivity.getBowlingLanes()) && activityOverlaps(incoming, existingActivity)) {

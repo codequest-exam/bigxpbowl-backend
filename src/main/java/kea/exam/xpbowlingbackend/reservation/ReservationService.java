@@ -32,7 +32,7 @@ public class ReservationService {
         return reservationRepository.findAll();
     }
 
-    public Optional< Reservation> getReservationById(int id) {
+    public Optional<Reservation> getReservationById(int id) {
         return reservationRepository.findById(id);
     }
 
@@ -40,7 +40,10 @@ public class ReservationService {
     public Reservation createReservation(Reservation reservation) {
         return createReservation(reservation, false);
     }
+
+
     public Reservation createReservation(Reservation reservation, boolean specified) {
+    //public Reservation createReservation(Reservation reservation, boolean specified) {
         System.out.println("saving reservation");
         if (reservation.getActivities() == null || reservation.getActivities().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Activities cannot be null");
@@ -48,10 +51,9 @@ public class ReservationService {
         List<Activity> activities = reservation.getActivities();
 
         for (Activity activity : activities) {
-            if (specified && !activityService.timeSlotAvailableOnSpecificTableOrLane(activity)){
+            if (specified && !activityService.timeSlotAvailableOnSpecificTableOrLane(activity)) {
                 throw new TimeSlotNotAvailableException("Time slots not available on the specific lane or table");
-            }
-            else {
+            } else {
                 activityService.setAvailableTableOrLane(activity);
             }
         }
@@ -65,16 +67,32 @@ public class ReservationService {
         return recurringBowlingReservationRepository.save(recurringBowlingReservation);
     }
 
-    public Optional< Reservation> updateReservation(int id, Reservation reservation) {
-        Optional<Reservation> opt = reservationRepository.findById(id);
-        if (opt.isPresent()) {
-            reservation.setId(id);
-            return Optional.of(reservationRepository.save(reservation)) ;
+    public Reservation updateReservationSpecific(int id, Reservation reservation) {
+        Reservation foundRes = reservationRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        reservation.setId(foundRes.getId());
+
+        if (!reservation.getActivities().equals(foundRes.getActivities())) {
+            System.out.println("not equal activities");
+            return createReservation(reservation, true);
         }
         else {
-            return Optional.empty();
+            System.out.println("equal activities");
+            return reservationRepository.save(reservation);
         }
     }
+
+    public Reservation updateReservationGeneral(int id, Reservation reservation) {
+        Reservation foundRes = reservationRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        reservation.setId(foundRes.getId());
+        if (!reservation.getActivities().equals(foundRes.getActivities()) ) {
+            return createReservation(reservation);
+        }
+        else {
+            System.out.println("equal activities");
+            return reservationRepository.save(reservation);
+        }
+    }
+
 
     public void deleteReservation(int id) {
         reservationRepository.deleteById(id);

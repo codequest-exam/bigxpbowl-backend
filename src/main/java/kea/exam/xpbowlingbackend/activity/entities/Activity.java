@@ -58,4 +58,13 @@ public class Activity {
                 ", diningTables=" + diningTables +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Activity) {
+            Activity other = (Activity) obj;
+            return this.id == other.id;
+        }
+        return false;
+    }
 }

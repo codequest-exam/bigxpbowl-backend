@@ -56,25 +56,25 @@ public class ReservationControllerIntegrationTest {
     @Test
     void createNewBowlingReservationWithNoDiningOrAirhockey() {
         webClient.post().uri("/reservation").contentType(MediaType.APPLICATION_JSON).bodyValue("""
-                {
-                    "name": "Harry",
-                    "phoneNumber": "12345678",
-                    "participants": 1,
-                    "activities": [
                         {
-                           
-                            "startTime": "12:00",
-                            "endTime": "13:00",
-                            "date": "2021-12-24",
-                            "bowlingLanes": [
+                            "name": "Harry",
+                            "phoneNumber": "12345678",
+                            "participants": 1,
+                            "activities": [
                                 {
-                                    "laneNumber": 1
+                                   
+                                    "startTime": "12:00",
+                                    "endTime": "13:00",
+                                    "date": "2021-12-24",
+                                    "bowlingLanes": [
+                                        {
+                                            "laneNumber": 1
+                                        }
+                                    ]
                                 }
                             ]
                         }
-                    ]
-                }
-                """).exchange().expectStatus().isCreated().expectBody()
+                        """).exchange().expectStatus().isCreated().expectBody()
                 .jsonPath("$.activities[0].bowlingLanes[0].laneNumber").isEqualTo(1)
                 .jsonPath("$.activities[0].diningTables").doesNotExist().jsonPath("$.activities[0].airhockeyTables").doesNotExist();
     }
@@ -83,70 +83,69 @@ public class ReservationControllerIntegrationTest {
     @Test
     void createNewBowlingAndAirhockeyReservationWithNoDining() {
         webClient.post().uri("/reservation").contentType(MediaType.APPLICATION_JSON).bodyValue("""
-                {
-                    "name": "Harry",
-                    "phoneNumber": "12345678",
-                    "participants": 1,
-                    "activities": [
                         {
-                           
-                            "startTime": "12:00",
-                            "endTime": "13:00",
-                            "date": "2021-12-24",
-                            "diningTables": [
+                            "name": "Harry",
+                            "phoneNumber": "12345678",
+                            "participants": 1,
+                            "activities": [
                                 {
-                                    "tableNumber": 1
-                                }
-                            ],
-                            "bowlingLanes": [
-                                {
-                                    "laneNumber": 1
+                                   
+                                    "startTime": "12:00",
+                                    "endTime": "13:00",
+                                    "date": "2021-12-24",
+                                    "diningTables": [
+                                        {
+                                            "tableNumber": 1
+                                        }
+                                    ],
+                                    "bowlingLanes": [
+                                        {
+                                            "laneNumber": 1
+                                        }
+                                    ]
                                 }
                             ]
                         }
-                    ]
-                }
-                """).exchange().expectStatus().isCreated().expectBody()
+                        """).exchange().expectStatus().isCreated().expectBody()
                 .jsonPath("$.activities[0].diningTables[0].tableNumber").isEqualTo(1)
                 .jsonPath("$.activities[0].bowlingLanes[0].laneNumber").isEqualTo(1)
                 .jsonPath("$.activities[0].airhockeyTables").doesNotExist();
     }
 
 
-
     @Test
     void createNewReservationWithAllActivities() {
         webClient.post().uri("/reservation").contentType(MediaType.APPLICATION_JSON).bodyValue("""
-                {
-                    "name": "Harry",
-                    "phoneNumber": "12345678",
-                    "participants": 1,
-                    "activities": [
                         {
-                           
-                            "startTime": "12:00",
-                            "endTime": "13:00",
-                            "date": "2021-12-24",
-                            "diningTables": [
+                            "name": "Harry",
+                            "phoneNumber": "12345678",
+                            "participants": 1,
+                            "activities": [
                                 {
-                                    "tableNumber": 1
-                                }
-                            ],
-                            "bowlingLanes": [
-                                {
-                                    "laneNumber": 1
-                                }
-                            ],
-                            "airhockeyTables": [
-                                {
-                                    "tableNumber": 1
+                                   
+                                    "startTime": "12:00",
+                                    "endTime": "13:00",
+                                    "date": "2021-12-24",
+                                    "diningTables": [
+                                        {
+                                            "tableNumber": 1
+                                        }
+                                    ],
+                                    "bowlingLanes": [
+                                        {
+                                            "laneNumber": 1
+                                        }
+                                    ],
+                                    "airhockeyTables": [
+                                        {
+                                            "tableNumber": 1
+                                        }
+                                    ]
                                 }
                             ]
                         }
-                    ]
-                }
-                """).exchange().expectStatus().isCreated().expectBody()
-             .jsonPath("$.activities[0].diningTables[0].tableNumber").isEqualTo(1)
+                        """).exchange().expectStatus().isCreated().expectBody()
+                .jsonPath("$.activities[0].diningTables[0].tableNumber").isEqualTo(1)
                 .jsonPath("$.activities[0].bowlingLanes[0].laneNumber").isEqualTo(1)
                 .jsonPath("$.activities[0].airhockeyTables[0].tableNumber").isEqualTo(1);
 
@@ -177,16 +176,16 @@ public class ReservationControllerIntegrationTest {
     }
 
     @Test
-    void createDuplicateReservation(){
+    void createDuplicateReservation() {
         List<Reservation> newRes = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
             reservationService.createReservation(
-            //newRes.add(
-            new Reservation("12345678 + " +i, "Harry"+i, 1,
-                    List.of(new Activity(LocalTime.of(12,0), LocalTime.of(13,0) , LocalDate.of(2021, 12, 24),
-                            List.of(new BowlingLane(false, false, i+1)),
-                            null, null)
-            )));
+                    //newRes.add(
+                    new Reservation("12345678 + " + i, "Harry" + i, 1,
+                            List.of(new Activity(LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 12, 24),
+                                    List.of(new BowlingLane(false, false, i + 1)),
+                                    null, null)
+                            )));
         }
 
         webClient.post().uri("/reservation").contentType(MediaType.APPLICATION_JSON).bodyValue("""
@@ -211,12 +210,12 @@ public class ReservationControllerIntegrationTest {
     }
 
     @Test
-    void createReservationWithSomeExistingEntries(){
+    void createReservationWithSomeExistingEntries() {
         for (int i = 0; i < 20; i++) {
             reservationService.createReservation(
-                    new Reservation("12345678 + " +i, "Harry"+i, 1,
-                            List.of(new Activity(LocalTime.of(12,0), LocalTime.of(13,0) , LocalDate.of(2021, 12, 24),
-                                    List.of(new BowlingLane(false, false, i+1)),
+                    new Reservation("12345678 + " + i, "Harry" + i, 1,
+                            List.of(new Activity(LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 12, 24),
+                                    List.of(new BowlingLane(false, false, i + 1)),
                                     null, null)
                             )));
         }
@@ -240,5 +239,38 @@ public class ReservationControllerIntegrationTest {
                         }]
                 }
                 """).exchange().expectStatus().isCreated().expectBody().jsonPath("$.activities[0].bowlingLanes[0].laneNumber").isEqualTo(21);
+    }
+
+    @Test
+    void updateReservationWithoutChangingActivities() {
+        Reservation reservation = reservationService.createReservation(
+                new Reservation("12345678", "Harry", 1,
+                        List.of(new Activity(LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 12, 24),
+                                List.of(new BowlingLane(false, false, 1)),
+                                null, null)
+                        )));
+
+        webClient.put().uri("/reservation/{id}", reservation.getId()).contentType(MediaType.APPLICATION_JSON).bodyValue("""
+                {
+                    
+                    "name": "No longer harry",
+                    "phoneNumber": "12345678",
+                    "participants": 1,
+                    "activities": [
+                          {
+                            "id": 301,
+                            "startTime": "12:00",
+                            "endTime": "13:00",
+                            "date": "2021-12-24",
+                            "bowlingLanes": [
+                                {
+                                    "laneNumber": 1
+                                }
+                            ]
+                        }]
+                }
+                """).exchange().expectStatus().isOk().expectBody()
+                .jsonPath("$.activities[0].bowlingLanes[0].laneNumber").isEqualTo(1)
+                .jsonPath("$.name").isEqualTo("No longer harry");
     }
 }
