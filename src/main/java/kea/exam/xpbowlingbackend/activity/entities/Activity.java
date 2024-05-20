@@ -1,37 +1,49 @@
 package kea.exam.xpbowlingbackend.activity.entities;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Activity {
     @Id
     @GeneratedValue
     private int id;
-    private String startTime;
-    private String endTime;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private LocalDate date;
 
-    @ManyToOne
-    private ActivityType activityType;
 
-    @ManyToMany
-    private List<Bookable> bookables;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<BowlingLane> bowlingLanes = null;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<AirhockeyTable> airhockeyTables = null;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<DiningTable> diningTables = null;
 
-    public Activity(ActivityType activityType, String startTime, String endTime, LocalDate date , List<Bookable> bookables) {
+
+    public Activity(LocalTime startTime, LocalTime endTime, LocalDate date, List<BowlingLane> bowlingLanes, List<DiningTable> diningTables, List<AirhockeyTable> airhockeyTables) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.date = date;
-        this.activityType = activityType;
-        this.bookables = bookables;
+
+        this.bowlingLanes = bowlingLanes;
+        this.airhockeyTables = airhockeyTables;
+        this.diningTables = diningTables;
+    }
+
+    public Activity(LocalTime startTime, LocalTime endTime, LocalDate date) {
+        this(startTime, endTime, date, null, null, null);
     }
 
     @Override
@@ -41,8 +53,9 @@ public class Activity {
                 ", startTime='" + startTime + '\'' +
                 ", endTime='" + endTime + '\'' +
                 ", date=" + date +
-                ", activityType=" + activityType +
-                ", bookables=" + bookables +
+                ", bowlingLanes=" + bowlingLanes +
+                ", airhockeyTables=" + airhockeyTables +
+                ", diningTables=" + diningTables +
                 '}';
     }
 }

@@ -1,7 +1,9 @@
 package kea.exam.xpbowlingbackend.activity.entities;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
-import kea.exam.xpbowlingbackend.reservation.RecurringBowlingReservation;
+import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservation;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,21 +15,21 @@ import java.util.List;
 @Getter
 @Setter
 
-public class BowlingLane extends Bookable {
-    private boolean childFriendly;
-    private boolean clubLane;
-
+public class BowlingLane {
+    @Id
     private int laneNumber;
+    private boolean maintenance;
 
-    @OneToMany(mappedBy = "bowlingLane")
-    private List<RecurringBowlingReservation> recurringBowlingReservationList;
+    private boolean childFriendly;
 
-    public BowlingLane(ActivityType activityType, boolean maintenance, boolean childFriendly, boolean clubLane, int laneNumber ) {
-        this.setActivityType(activityType);
-        this.setMaintenance(maintenance);
+
+
+    public BowlingLane(boolean maintenance, boolean childFriendly, int laneNumber ) {
+        this.maintenance =maintenance;
         this.childFriendly = childFriendly;
-        this.clubLane = clubLane;
+
         this.laneNumber = laneNumber;
     }
+
 
 }

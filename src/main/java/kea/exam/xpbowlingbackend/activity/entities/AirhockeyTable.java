@@ -1,6 +1,8 @@
 package kea.exam.xpbowlingbackend.activity.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,11 +11,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class AirhockeyTable extends Bookable {
-    private int tableNumber;
-    public AirhockeyTable(ActivityType activityType, boolean maintenance, int tableNumber){
+public class AirhockeyTable {
 
-        super(activityType, maintenance);
+    @Id
+    private int tableNumber;
+    private boolean maintenance;
+
+    public AirhockeyTable(boolean maintenance, int tableNumber){
+        this.maintenance = maintenance;
         this.tableNumber = tableNumber;
     }
 }

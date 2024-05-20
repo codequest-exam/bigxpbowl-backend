@@ -2,6 +2,8 @@ package kea.exam.xpbowlingbackend.activity.entities;
 
 import jakarta.persistence.Entity;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,10 +12,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class DiningTable extends Bookable {
+public class DiningTable {
+    @Id
     private int tableNumber;
-    public DiningTable(ActivityType activityType, boolean maintenance, int tableNumber){
-        super(activityType, maintenance);
+    private boolean maintenance;
+
+
+    public DiningTable( boolean maintenance, int tableNumber) {
+        this.maintenance = maintenance;
         this.tableNumber = tableNumber;
     }
 }
