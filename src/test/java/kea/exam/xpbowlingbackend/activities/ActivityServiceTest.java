@@ -9,9 +9,9 @@ import kea.exam.xpbowlingbackend.activity.repositories.ActivityRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +42,8 @@ public class ActivityServiceTest {
 
         when(activityRepository.findAllByDate(any(LocalDate.class))).thenReturn(List.of());
 
-        assertTrue(activityService.timeSlotAvailable(activityToCheck));
+        assertTrue(activityService.setAvailableTableOrLane(activityToCheck));
+
     }
 
     @Test
@@ -66,7 +67,32 @@ public class ActivityServiceTest {
 //        ));
 
 
-           assertThrows(RuntimeException.class, () -> activityService.timeSlotAvailable(activityToCheck));
+           assertThrows(RuntimeException.class, () -> activityService.setAvailableTableOrLane(activityToCheck));
+
+    }
+
+    @Test
+    public void timeSlotAvailable_throwsError_when23OtherBowlingActivitiesExistDuringTheTimePeriod() {
+
+        Activity activityToCheck = new Activity( LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 12, 24));
+        activityToCheck.setBowlingLanes(List.of(new BowlingLane( false, false, 1)));
+
+        List<Activity> existingActivities = new ArrayList<>();
+
+        for (int i = 0; i < 23; i++) {
+            existingActivities.add(new Activity( LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 12, 24),
+                    List.of(new BowlingLane( false, false, i+1)), null, null));
+        }
+
+        when(activityRepository.findAllByDate(any(LocalDate.class))).thenReturn(existingActivities);
+
+//        when(activityRepository.findAllByDate(any(LocalDate.class))).thenReturn(List.of(
+//                new Activity( LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 12, 24),
+//                        List.of(new BowlingLane( false, false, 1)), null, null)
+//        ));
+
+
+        assertTrue(activityService.setAvailableTableOrLane(activityToCheck));
 
     }
 
@@ -87,7 +113,7 @@ public class ActivityServiceTest {
 
         when(activityRepository.findAllByDate(any(LocalDate.class))).thenReturn(existingActivities);
 
-        assertThrows(IllegalArgumentException.class, () -> activityService.timeSlotAvailable(activityToCheck));
+        assertThrows(ResponseStatusException.class, () -> activityService.setAvailableTableOrLane(activityToCheck));
 
 
     }
@@ -114,7 +140,7 @@ public class ActivityServiceTest {
 //        ));
 
 
-        assertTrue(activityService.timeSlotAvailable(activityToCheck));
+        assertTrue(activityService.setAvailableTableOrLane(activityToCheck));
 
     }
 
@@ -146,7 +172,7 @@ public class ActivityServiceTest {
 
         when(activityRepository.findAllByDate(any(LocalDate.class))).thenReturn(existingActivities);
 
-        assertTrue(activityService.timeSlotAvailable(activityToCheck));
+        assertTrue(activityService.setAvailableTableOrLane(activityToCheck));
     }
 
     @Test

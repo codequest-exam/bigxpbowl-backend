@@ -1,13 +1,10 @@
 package kea.exam.xpbowlingbackend.reservation;
 
-import jakarta.persistence.ManyToMany;
 import kea.exam.xpbowlingbackend.activity.ActivityService;
 import kea.exam.xpbowlingbackend.activity.entities.Activity;
 
 import kea.exam.xpbowlingbackend.activity.entities.BowlingLane;
-import kea.exam.xpbowlingbackend.reservation.Reservation;
-import kea.exam.xpbowlingbackend.reservation.ReservationRepository;
-import kea.exam.xpbowlingbackend.reservation.ReservationService;
+import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -31,8 +28,17 @@ class ReservationServiceTest {
     @Mock
     private ActivityService activityService;
 
+    @Mock
+    private RecurringBowlingReservationRepository recurringBowlingReservationRepository;
+
     @InjectMocks
     private ReservationService reservationService;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        reservationService = new ReservationService(reservationRepository, activityService, recurringBowlingReservationRepository);
+    }
 
 
     @Test

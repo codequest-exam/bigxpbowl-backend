@@ -4,14 +4,15 @@ package kea.exam.xpbowlingbackend.reservation;
 import kea.exam.xpbowlingbackend.activity.ActivityService;
 import kea.exam.xpbowlingbackend.activity.dtos.ActivityResponseDto;
 import kea.exam.xpbowlingbackend.activity.entities.Activity;
+import kea.exam.xpbowlingbackend.exceptions.TimeSlotNotAvailableException;
 import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservation;
 import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservationRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ReservationService {
@@ -35,18 +36,27 @@ public class ReservationService {
         return reservationRepository.findById(id);
     }
 
+
     public Reservation createReservation(Reservation reservation) {
-        System.out.println("saving reservations");
+        return createReservation(reservation, false);
+    }
+    public Reservation createReservation(Reservation reservation, boolean specified) {
+        System.out.println("saving reservation");
+        if (reservation.getActivities() == null || reservation.getActivities().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Activities cannot be null");
+        }
         List<Activity> activities = reservation.getActivities();
+
+        for (Activity activity : activities) {
+            if (specified && !activityService.timeSlotAvailableOnSpecificTableOrLane(activity)){
+                throw new TimeSlotNotAvailableException("Time slots not available");
+            }
+            else {
+                activityService.setAvailableTableOrLane(activity);
+            }
+        }
         List<Activity> savedActivities = activityService.saveAll(activities);
 
-        System.out.println("SAVED ACTIVITIES");
-        System.out.println(savedActivities);
-
-//        List<Activity> savedActivities = new ArrayList<>();
-//        for (Activity activity : activities) {
-//            System.out.println(activity.getActivityType());
-//        }
         reservation.setActivities(savedActivities);
         return reservationRepository.save(reservation);
     }

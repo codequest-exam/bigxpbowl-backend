@@ -1,15 +1,11 @@
 package kea.exam.xpbowlingbackend.reservation;
 
-import kea.exam.xpbowlingbackend.activity.dtos.ActivityResponseDto;
 import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservation;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,14 +35,17 @@ public class ReservationController {
         else {
             System.out.println("NOT FOUND");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-            //throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Reservation with id " + id + " not found");
         }
     }
 
     @PostMapping
     public ResponseEntity<Reservation> createStandardReservation(@RequestBody Reservation reservation){
-        return ResponseEntity.status(HttpStatus.CREATED).body(reservationService.createReservation(reservation)) ;
+        return ResponseEntity.status(HttpStatus.CREATED).body(reservationService.createReservation(reservation, false)) ;
+    }
 
+    @PostMapping("/specified")
+    public ResponseEntity<Reservation> createSpecifiedReservation(@RequestBody Reservation reservation){
+        return ResponseEntity.status(HttpStatus.CREATED).body(reservationService.createReservation(reservation, true)) ;
     }
 
     @PostMapping("/recurring")
