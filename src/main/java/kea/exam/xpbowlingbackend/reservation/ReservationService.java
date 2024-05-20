@@ -43,7 +43,8 @@ public class ReservationService {
 
 
     public Reservation createReservation(Reservation reservation, boolean specified) {
-    //public Reservation createReservation(Reservation reservation, boolean specified) {
+        // TODO: Implement a child lane check. Also in the activityService methods.
+        //public Reservation createReservation(Reservation reservation, boolean specified) {
         System.out.println("saving reservation");
         if (reservation.getActivities() == null || reservation.getActivities().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Activities cannot be null");
@@ -74,23 +75,36 @@ public class ReservationService {
         if (!reservation.getActivities().equals(foundRes.getActivities())) {
             System.out.println("not equal activities");
             return createReservation(reservation, true);
-        }
-        else {
+        } else {
             System.out.println("equal activities");
             return reservationRepository.save(reservation);
         }
     }
 
-    public Reservation updateReservationGeneral(int id, Reservation reservation) {
-        Reservation foundRes = reservationRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        reservation.setId(foundRes.getId());
-        if (!reservation.getActivities().equals(foundRes.getActivities()) ) {
-            return createReservation(reservation);
-        }
-        else {
-            System.out.println("equal activities");
-            return reservationRepository.save(reservation);
-        }
+    public Reservation updateReservationGeneral(int id, Reservation updatedReservation) {
+        // TODO: Implement this method: Delete missing activities, update existing activities, add new activities
+
+//        Reservation foundRes = reservationRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+//        updatedReservation.setId(foundRes.getId());
+//        if (updatedReservation.getActivities() == null || updatedReservation.getActivities().isEmpty()) {
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Activities cannot be null");
+//        }
+//        List<Activity> activitiesNoLongerInReservation = foundRes.getActivities().stream().filter(
+//                activity -> updatedReservation.getActivities().stream().noneMatch(
+//                        updatedActivity -> updatedActivity.getId() == activity.getId()
+//                )
+//        ).toList();
+//        List<Activity> newActivities = updatedReservation.getActivities().stream().filter(
+//                updatedActivity -> foundRes.getActivities().stream().noneMatch(
+//                        activity -> updatedActivity.getId() == activity.getId()
+//                )
+//        ).toList();
+//        for (Activity activity : activitiesNoLongerInReservation) {
+//            activityService.deleteActivity(activity.getId());
+//        }
+
+        return updatedReservation;
+
     }
 
 

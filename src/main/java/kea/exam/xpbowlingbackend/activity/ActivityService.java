@@ -66,7 +66,7 @@ public class ActivityService {
         System.out.println(activitiesOnTheDay.size());
 
         for (Activity activity : activitiesOnTheDay) {
-            if (activityToCheck.getId() == activityToCheck.getId()) {
+            if (activityToCheck.getId() == activity.getId()) {
                 continue;
             }
             countIfOverlap(activityToCheck, activity);
@@ -226,4 +226,7 @@ public class ActivityService {
     }
 
 
+    public void deleteActivity(int id) {
+        activityRepository.deleteById(id);
+    }
 }
