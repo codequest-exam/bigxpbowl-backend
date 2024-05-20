@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface ActivityRepository extends JpaRepository<Activity, Integer> {
     List<Activity> findAllByDate(LocalDate date);
+
+    List<Activity> findAllByDateBetween(LocalDate startDate, LocalDate endDate);
 }

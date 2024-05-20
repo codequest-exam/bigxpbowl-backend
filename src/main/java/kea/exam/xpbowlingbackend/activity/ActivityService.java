@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ActivityService {
@@ -27,8 +29,31 @@ public class ActivityService {
         this.activityRepository = activityRepository;
     }
 
+
+    public List<Activity> getAllActivities() {
+        return activityRepository.findAll();
+    }
+
+
     public List<Activity> saveAll(List<Activity> activities) {
         return activityRepository.saveAll(activities);
+    }
+
+    public Optional<Activity> getActivityById(int id) {
+        return activityRepository.findById(id);
+    }
+
+
+    public List<Activity> getActivitiesByDate(LocalDate date) {
+        return activityRepository.findAllByDate(date);
+    }
+
+    public List<Activity> getActivitiesByWeek(LocalDate date) {
+        return activityRepository.findAllByDateBetween(date, date.plusWeeks(1));
+    }
+
+    public List<Activity> getActivitiesByMonth(LocalDate date) {
+        return activityRepository.findAllByDateBetween(date, date.plusMonths(1));
     }
 
     public boolean setAvailableTableOrLane(Activity activityToCheck) {
@@ -43,11 +68,10 @@ public class ActivityService {
         for (Activity activity : activitiesOnTheDay) {
             countIfOverlap(activityToCheck, activity);
         }
+
         setFirstAvailableTableOrLane(activityToCheck);
 
         throwIfExceedsLimit(activityToCheck);
-
-
 
         resetTakenCount();
 
@@ -95,26 +119,26 @@ public class ActivityService {
         }
     }
 
-    private void countIfOverlap(Activity activityToCheck, Activity activity) {
-        if (activityToCheck.getBowlingLanes() != null && activity.getBowlingLanes() != null) {
-            for (int i = 0; i < activity.getBowlingLanes().size(); i++) {
-                if (activityOverlaps(activityToCheck, activity)) {
+    private void countIfOverlap(Activity activityToCheck, Activity existingActivity) {
+        if (activityToCheck.getBowlingLanes() != null && existingActivity.getBowlingLanes() != null) {
+            for (int i = 0; i < existingActivity.getBowlingLanes().size(); i++) {
+                if (activityOverlaps(activityToCheck, existingActivity)) {
                     bowlingTaken++;
                 }
             }
         }
 
-        if (activityToCheck.getAirhockeyTables() != null && activity.getAirhockeyTables() != null) {
-            for (int i = 0; i < activity.getAirhockeyTables().size(); i++) {
-                if (activityOverlaps(activityToCheck, activity)) {
+        if (activityToCheck.getAirhockeyTables() != null && existingActivity.getAirhockeyTables() != null) {
+            for (int i = 0; i < existingActivity.getAirhockeyTables().size(); i++) {
+                if (activityOverlaps(activityToCheck, existingActivity)) {
                     airHockeyTaken++;
                 }
             }
         }
 
-        if (activityToCheck.getDiningTables() != null && activity.getDiningTables() != null) {
-            for (int i = 0; i < activity.getDiningTables().size(); i++) {
-                if (activityOverlaps(activityToCheck, activity)) {
+        if (activityToCheck.getDiningTables() != null && existingActivity.getDiningTables() != null) {
+            for (int i = 0; i < existingActivity.getDiningTables().size(); i++) {
+                if (activityOverlaps(activityToCheck, existingActivity)) {
                     diningTaken++;
                 }
             }

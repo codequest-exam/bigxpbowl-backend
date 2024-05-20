@@ -34,9 +34,7 @@ public class ActivityServiceTest {
 
 
     @Test
-    public void timeSlotAvailable_returnsTrue_whenNoActivitiesOnTheDay() {
-
-
+    public void setAvailableTableOrLane_returnsTrue_whenNoActivitiesOnTheDay() {
         Activity activityToCheck = new Activity( LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 12, 24));
         activityToCheck.setBowlingLanes(List.of(new BowlingLane( false, false, 1)));
 
@@ -47,7 +45,23 @@ public class ActivityServiceTest {
     }
 
     @Test
-    public void timeSlotAvailable_throwsError_when24OtherBowlingActivitiesExistDuringTheTimePeriod() {
+    public void getActivitiesByDate_returnsAllActivitiesOnTheGivenDate() {
+        LocalDate date = LocalDate.of(2021, 12, 24);
+        List<Activity> activities = Arrays.asList(
+                new Activity( LocalTime.of(12, 0), LocalTime.of(13, 0), date),
+                new Activity( LocalTime.of(13, 0), LocalTime.of(14, 0), date),
+                new Activity( LocalTime.of(14, 0), LocalTime.of(15, 0), date)
+        );
+
+        when(activityRepository.findAllByDate(date)).thenReturn(activities);
+
+        List<Activity> foundActivities = activityService.getActivitiesByDate(date);
+
+        assertTrue(foundActivities.containsAll(activities));
+    }
+
+    @Test
+    public void setAvailableTableOrLane_throwsError_when24OtherBowlingActivitiesExistDuringTheTimePeriod() {
 
         Activity activityToCheck = new Activity( LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 12, 24));
         activityToCheck.setBowlingLanes(List.of(new BowlingLane( false, false, 1)));
@@ -61,18 +75,11 @@ public class ActivityServiceTest {
 
         when(activityRepository.findAllByDate(any(LocalDate.class))).thenReturn(existingActivities);
 
-//        when(activityRepository.findAllByDate(any(LocalDate.class))).thenReturn(List.of(
-//                new Activity( LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 12, 24),
-//                        List.of(new BowlingLane( false, false, 1)), null, null)
-//        ));
-
-
-           assertThrows(RuntimeException.class, () -> activityService.setAvailableTableOrLane(activityToCheck));
-
+        assertThrows(RuntimeException.class, () -> activityService.setAvailableTableOrLane(activityToCheck));
     }
 
     @Test
-    public void timeSlotAvailable_throwsError_when23OtherBowlingActivitiesExistDuringTheTimePeriod() {
+    public void setAvailableTableOrLane_throwsError_when23OtherBowlingActivitiesExistDuringTheTimePeriod() {
 
         Activity activityToCheck = new Activity( LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 12, 24));
         activityToCheck.setBowlingLanes(List.of(new BowlingLane( false, false, 1)));
@@ -86,18 +93,11 @@ public class ActivityServiceTest {
 
         when(activityRepository.findAllByDate(any(LocalDate.class))).thenReturn(existingActivities);
 
-//        when(activityRepository.findAllByDate(any(LocalDate.class))).thenReturn(List.of(
-//                new Activity( LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 12, 24),
-//                        List.of(new BowlingLane( false, false, 1)), null, null)
-//        ));
-
-
         assertTrue(activityService.setAvailableTableOrLane(activityToCheck));
-
     }
 
     @Test
-    public void timeSlotAvailable_throwsError_when12OtherBowlingActivitiesOn4LanesExists() {
+    public void setAvailableTableOrLane_throwsError_when12OtherBowlingActivitiesOn4LanesExists() {
 
         Activity activityToCheck = new Activity( LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 12, 24));
         activityToCheck.setBowlingLanes(List.of(new BowlingLane( false, false, 1)));
@@ -114,15 +114,12 @@ public class ActivityServiceTest {
         when(activityRepository.findAllByDate(any(LocalDate.class))).thenReturn(existingActivities);
 
         assertThrows(ResponseStatusException.class, () -> activityService.setAvailableTableOrLane(activityToCheck));
-
-
     }
 
     @Test
-    public void timeSlotAvailable_returnsTrue_when24ActivitiesOfDifferentKindExist() {
+    public void setAvailableTableOrLane_returnsTrue_when24ActivitiesOfDifferentKindExist() {
 
         Activity activityToCheck = new Activity( LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 12, 24));
-        //activityToCheck.setBowlingLanes(List.of(new BowlingLane( false, false, 1)));
         activityToCheck.setAirhockeyTables(List.of(new AirhockeyTable( false, 1)));
 
         List<Activity> existingActivities = new ArrayList<>();
@@ -134,28 +131,23 @@ public class ActivityServiceTest {
 
         when(activityRepository.findAllByDate(any(LocalDate.class))).thenReturn(existingActivities);
 
-//        when(activityRepository.findAllByDate(any(LocalDate.class))).thenReturn(List.of(
-//                new Activity( LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 12, 24),
-//                        List.of(new BowlingLane( false, false, 1)), null, null)
-//        ));
-
-
         assertTrue(activityService.setAvailableTableOrLane(activityToCheck));
-
     }
 
 
 
     @Test
-    public void timeSlotAvailable_returnsTrue_whenAMixOfActivitiesExistButNoMoreThanMaxAmount(){
+    public void setAvailableTableOrLane_returnsTrue_whenAMixOfActivitiesExistButNoMoreThanMaxAmount(){
         Activity activityToCheck = new Activity( LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 12, 24));
-        activityToCheck.setBowlingLanes(List.of(new BowlingLane( false, false, 1)));
+        activityToCheck.setBowlingLanes(List.of(
+                new BowlingLane( false, false, 1), new BowlingLane( false, false, 2)
+        ));
         activityToCheck.setAirhockeyTables(List.of(new AirhockeyTable( false, 1)));
         activityToCheck.setDiningTables(List.of(new DiningTable( false, 1)));
 
         List<Activity> existingActivities = new ArrayList<>();
 
-        for (int i = 0; i < 23; i++) {
+        for (int i = 0; i < 22; i++) {
             existingActivities.add(new Activity( LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 12, 24),
                     List.of(new BowlingLane( false, false, i+1)), null, null));
         }

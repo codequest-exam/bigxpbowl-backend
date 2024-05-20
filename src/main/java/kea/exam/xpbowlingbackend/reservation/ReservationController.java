@@ -40,7 +40,7 @@ public class ReservationController {
 
     @PostMapping
     public ResponseEntity<Reservation> createStandardReservation(@RequestBody Reservation reservation){
-        return ResponseEntity.status(HttpStatus.CREATED).body(reservationService.createReservation(reservation, false)) ;
+        return ResponseEntity.status(HttpStatus.CREATED).body(reservationService.createReservation(reservation)) ;
     }
 
     @PostMapping("/specified")

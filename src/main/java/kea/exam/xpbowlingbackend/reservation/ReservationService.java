@@ -49,7 +49,7 @@ public class ReservationService {
 
         for (Activity activity : activities) {
             if (specified && !activityService.timeSlotAvailableOnSpecificTableOrLane(activity)){
-                throw new TimeSlotNotAvailableException("Time slots not available");
+                throw new TimeSlotNotAvailableException("Time slots not available on the specific lane or table");
             }
             else {
                 activityService.setAvailableTableOrLane(activity);
