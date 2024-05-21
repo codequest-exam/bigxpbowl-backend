@@ -25,9 +25,6 @@ public class Activity {
     private ActivityType activityType;
     private int amountBooked;
 
-
-
-
     public Activity(LocalTime startTime, LocalTime endTime, LocalDate date, ActivityType activityType, int amountBooked) {
         this.startTime = startTime;
         this.endTime = endTime;

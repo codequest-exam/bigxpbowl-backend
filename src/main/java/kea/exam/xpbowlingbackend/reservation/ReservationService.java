@@ -2,6 +2,7 @@ package kea.exam.xpbowlingbackend.reservation;
 
 
 import kea.exam.xpbowlingbackend.activity.ActivityService;
+import kea.exam.xpbowlingbackend.activity.entities.Activity;
 import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservation;
 import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservationRepository;
 import org.springframework.stereotype.Service;
@@ -33,19 +34,31 @@ public class ReservationService {
 
 
     public Reservation createReservation(Reservation reservation) {
+        List<Activity> activities = reservation.getActivities();
+        if (activities != null && !activities.isEmpty()) {
+            activityService.saveAll(activities);
+        }
         return reservationRepository.save(reservation);
-    }
-    public RecurringBowlingReservation createRecurringReservation(RecurringBowlingReservation recurringBowlingReservation) {
+    }    public RecurringBowlingReservation createRecurringReservation(RecurringBowlingReservation recurringBowlingReservation) {
         return recurringBowlingReservationRepository.save(recurringBowlingReservation);
     }
     public Reservation updateReservationGeneral(int id, Reservation reservation) {
+        List<Activity> activities = reservation.getActivities();
+        if (activities != null && !activities.isEmpty()) {
+            activityService.saveAll(activities);
+        }
         return reservationRepository.save(reservation);
     }
-    public void deleteReservation(int id) {
-        Optional<Reservation> opt = reservationRepository.findById(id);
-        if (opt.isPresent()) {
-            reservationRepository.deleteById(id);
+    public void deleteReservation(int reservationId) {
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
+        List<Activity> activities = reservation.getActivities();
+        activities.size(); // This line ensures that the activities are fetched while the Session is still open
+        reservationRepository.deleteById(reservationId);
+        if (!activities.isEmpty()) {
+            activityService.deleteAll(activities);
         }
     }
+    }
 
-}
+

@@ -1,13 +1,8 @@
 package kea.exam.xpbowlingbackend.activity;
 
 import kea.exam.xpbowlingbackend.activity.entities.Activity;
-import kea.exam.xpbowlingbackend.activity.entities.AirhockeyTable;
-import kea.exam.xpbowlingbackend.activity.entities.BowlingLane;
-import kea.exam.xpbowlingbackend.activity.entities.DiningTable;
 import kea.exam.xpbowlingbackend.activity.repositories.ActivityRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -54,6 +49,9 @@ public class ActivityService {
 
     public List<Activity> getActivitiesByMonth(LocalDate date) {
         return activityRepository.findAllByDateBetween(date, date.plusMonths(1));
+    }
+    public void deleteAll(List<Activity> activities) {
+        activityRepository.deleteAll(activities);
     }
 /*
     public boolean setAvailableTableOrLane(Activity activityToCheck) {

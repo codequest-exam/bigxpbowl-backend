@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/reservation")
+@RequestMapping("/reservations")
 public class ReservationController {
 
     private final ReservationService reservationService;
@@ -42,13 +42,6 @@ public class ReservationController {
     public ResponseEntity<Reservation> createStandardReservation(@RequestBody Reservation reservation){
         return ResponseEntity.status(HttpStatus.CREATED).body(reservationService.createReservation(reservation)) ;
     }
-
-//    @PostMapping
-//    public ResponseEntity<Reservation> createStandardReservation(@RequestBody Reservation reservation){
-//        return ResponseEntity.status(HttpStatus.CREATED).body(reservationService.createReservation(reservation)) ;
-//    }
-
-
 
     @PostMapping("/recurring")
     public RecurringBowlingReservation createRecurringReservation(@RequestBody RecurringBowlingReservation recurringBowlingReservation){
