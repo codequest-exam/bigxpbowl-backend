@@ -21,6 +21,7 @@ public class Activity {
     private LocalTime startTime;
     private LocalTime endTime;
     private LocalDate date;
+    @Getter
     @Enumerated(EnumType.STRING)
     private ActivityType activityType;
     private int amountBooked;

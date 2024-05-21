@@ -2,13 +2,17 @@ package kea.exam.xpbowlingbackend.reservation;
 
 
 import kea.exam.xpbowlingbackend.activity.ActivityService;
+import kea.exam.xpbowlingbackend.activity.dtos.ActivityResponseDTO;
 import kea.exam.xpbowlingbackend.activity.entities.Activity;
+import kea.exam.xpbowlingbackend.reservation.dtos.DTOConverter;
+import kea.exam.xpbowlingbackend.reservation.dtos.ReservationResponseDTO;
 import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservation;
 import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservationRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservationService {
@@ -24,8 +28,11 @@ public class ReservationService {
         this.recurringBowlingReservationRepository = recurringBowlingReservationRepository;
     }
 
-    public List<Reservation> getAllReservations() {
-        return reservationRepository.findAll();
+    public List<ReservationResponseDTO> getAllReservations() {
+        List<Reservation> reservations = reservationRepository.findAll();
+        return reservations.stream()
+                .map(DTOConverter::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     public Optional<Reservation> getReservationById(int id) {
@@ -59,6 +66,7 @@ public class ReservationService {
             activityService.deleteAll(activities);
         }
     }
+
     }
 
 

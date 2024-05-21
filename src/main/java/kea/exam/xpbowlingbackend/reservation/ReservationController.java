@@ -1,5 +1,6 @@
 package kea.exam.xpbowlingbackend.reservation;
 
+import kea.exam.xpbowlingbackend.reservation.dtos.ReservationResponseDTO;
 import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class ReservationController {
     }
 
     @GetMapping
-    public List<Reservation> getAllReservations(){
+    public List<ReservationResponseDTO> getAllReservations(){
         return reservationService.getAllReservations();
     }
 
