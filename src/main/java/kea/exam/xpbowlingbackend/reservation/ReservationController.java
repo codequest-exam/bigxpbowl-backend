@@ -48,20 +48,13 @@ public class ReservationController {
 //        return ResponseEntity.status(HttpStatus.CREATED).body(reservationService.createReservation(reservation)) ;
 //    }
 
-    @PostMapping("/specified")
-    public ResponseEntity<Reservation> createSpecifiedReservation(@RequestBody Reservation reservation){
-        return ResponseEntity.status(HttpStatus.CREATED).body(reservationService.createReservation(reservation, true)) ;
-    }
+
 
     @PostMapping("/recurring")
     public RecurringBowlingReservation createRecurringReservation(@RequestBody RecurringBowlingReservation recurringBowlingReservation){
         return reservationService.createRecurringReservation(recurringBowlingReservation);
     }
 
-    @PutMapping("/specified/{id}")
-    public Reservation updateReservationToSpecificLanes(@PathVariable int id, @RequestBody Reservation reservation){
-        return reservationService.updateReservationSpecific(id, reservation) ;
-    }
 
     @PutMapping("/{id}")
     public Reservation updateStandardReservation(@PathVariable int id, @RequestBody Reservation reservation){

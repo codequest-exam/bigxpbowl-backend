@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -22,28 +21,19 @@ public class Activity {
     private LocalTime startTime;
     private LocalTime endTime;
     private LocalDate date;
+    @Enumerated(EnumType.STRING)
+    private ActivityType activityType;
+    private int amountBooked;
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<BowlingLane> bowlingLanes = null;
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<AirhockeyTable> airhockeyTables = null;
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<DiningTable> diningTables = null;
 
 
-    public Activity(LocalTime startTime, LocalTime endTime, LocalDate date, List<BowlingLane> bowlingLanes, List<DiningTable> diningTables, List<AirhockeyTable> airhockeyTables) {
+    public Activity(LocalTime startTime, LocalTime endTime, LocalDate date, ActivityType activityType, int amountBooked) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.date = date;
-
-        this.bowlingLanes = bowlingLanes;
-        this.airhockeyTables = airhockeyTables;
-        this.diningTables = diningTables;
-    }
-
-    public Activity(LocalTime startTime, LocalTime endTime, LocalDate date) {
-        this(startTime, endTime, date, null, null, null);
+        this.activityType = activityType;
+        this.amountBooked = amountBooked;
     }
 
     @Override
@@ -53,9 +43,6 @@ public class Activity {
                 ", startTime='" + startTime + '\'' +
                 ", endTime='" + endTime + '\'' +
                 ", date=" + date +
-                ", bowlingLanes=" + bowlingLanes +
-                ", airhockeyTables=" + airhockeyTables +
-                ", diningTables=" + diningTables +
                 '}';
     }
 

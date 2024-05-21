@@ -55,7 +55,7 @@ public class ActivityService {
     public List<Activity> getActivitiesByMonth(LocalDate date) {
         return activityRepository.findAllByDateBetween(date, date.plusMonths(1));
     }
-
+/*
     public boolean setAvailableTableOrLane(Activity activityToCheck) {
         resetTakenCount();
 
@@ -224,7 +224,7 @@ public class ActivityService {
         }
         return false;
     }
-
+*/
 
     public void deleteActivity(int id) {
         activityRepository.deleteById(id);
