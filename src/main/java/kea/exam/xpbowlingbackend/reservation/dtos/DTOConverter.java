@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 public class DTOConverter {
 
     public static ReservationResponseDTO convertToDTO(Reservation reservation) {
-        // Assuming all activities in a reservation have the same date
         LocalDate date = reservation.getActivities().isEmpty() ? null : reservation.getActivities().get(0).getDate();
         List<String> activities = reservation.getActivities().stream()
                 .map(activity -> activity.getActivityType().name())

@@ -60,7 +60,7 @@ public class ReservationService {
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
         List<Activity> activities = reservation.getActivities();
-        activities.size(); // This line ensures that the activities are fetched while the Session is still open
+        activities.size();
         reservationRepository.deleteById(reservationId);
         if (!activities.isEmpty()) {
             activityService.deleteAll(activities);

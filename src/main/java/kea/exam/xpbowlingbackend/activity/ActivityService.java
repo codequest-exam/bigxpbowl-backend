@@ -53,6 +53,9 @@ public class ActivityService {
     public void deleteAll(List<Activity> activities) {
         activityRepository.deleteAll(activities);
     }
+    public boolean activityOverlaps(Activity activityToCheck, Activity activity) {
+        return (activity.getEndTime().isAfter(activityToCheck.getStartTime()) && activity.getStartTime().compareTo(activityToCheck.getStartTime()) <= 0);
+    }
 /*
     public boolean setAvailableTableOrLane(Activity activityToCheck) {
         resetTakenCount();
@@ -150,9 +153,7 @@ public class ActivityService {
         return taken + newOrder > limit;
     }
 
-    public boolean activityOverlaps(Activity activityToCheck, Activity activity) {
-        return (activity.getEndTime().isAfter(activityToCheck.getStartTime()) && activity.getStartTime().compareTo(activityToCheck.getStartTime()) <= 0);
-    }
+
 
     public boolean timeSlotAvailableOnSpecificTableOrLane(Activity incoming) {
 
