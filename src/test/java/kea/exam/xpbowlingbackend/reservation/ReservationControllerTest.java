@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -41,8 +42,8 @@ class ReservationControllerTest {
 
     @Test
     void getAllReservationsReturnsAllReservations() throws Exception {
-        ReservationResponseDTO reservation1 = new ReservationResponseDTO(1, "Reservation 1", "123456789", 10, LocalDate.now(), List.of("Activity 1", "Activity 2"));
-        ReservationResponseDTO reservation2 = new ReservationResponseDTO(2, "Reservation 2", "987654321", 5, LocalDate.now(), List.of("Activity 3"));
+        ReservationResponseDTO reservation1 = new ReservationResponseDTO(1, "Reservation 1", "123456789", 10, LocalDate.now(), LocalTime.now(), LocalTime.now(), List.of("Activity 1", "Activity 2"));
+        ReservationResponseDTO reservation2 = new ReservationResponseDTO(2, "Reservation 2", "987654321", 5, LocalDate.now(), LocalTime.now(), LocalTime.now(), List.of("Activity 3"));
         when(reservationService.getAllReservations()).thenReturn(Arrays.asList(reservation1, reservation2));
 
         mockMvc.perform(get("/reservations"))
