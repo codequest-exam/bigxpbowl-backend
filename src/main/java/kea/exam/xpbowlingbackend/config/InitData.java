@@ -64,7 +64,7 @@ public class InitData implements CommandLineRunner {
     }
     public void initActivities() {
         List<Activity> activities = Arrays.asList(
-                new Activity(LocalTime.of(9, 0), LocalTime.of(11, 0), LocalDate.now(), ActivityType.BOWLING, 1),
+                new Activity(LocalTime.of(10, 0), LocalTime.of(11, 0), LocalDate.now(), ActivityType.BOWLING, 1),
                 new Activity(LocalTime.of(11, 0), LocalTime.of(13, 0), LocalDate.now(), ActivityType.DINING, 1),
                 new Activity(LocalTime.of(13, 0), LocalTime.of(15, 0), LocalDate.now(), ActivityType.AIRHOCKEY, 1),
                 new Activity(LocalTime.of(15, 0), LocalTime.of(17, 0), LocalDate.now(), ActivityType.BOWLING, 1),
