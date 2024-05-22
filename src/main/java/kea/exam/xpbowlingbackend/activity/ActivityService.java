@@ -10,13 +10,6 @@ import java.util.Optional;
 
 @Service
 public class ActivityService {
-    final int totalAirHockeyTables = 6;
-    final int totalBowlingLanes = 24;
-    final int totalDiningTables = 20;
-    int bowlingTaken = 0;
-    int diningTaken = 0;
-    int airHockeyTaken = 0;
-
     ActivityRepository activityRepository;
 
 
