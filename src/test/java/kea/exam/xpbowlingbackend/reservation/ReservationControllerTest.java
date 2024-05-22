@@ -41,12 +41,10 @@ class ReservationControllerTest {
 
     @Test
     void getAllReservationsReturnsAllReservations() throws Exception {
-        // Arrange
         ReservationResponseDTO reservation1 = new ReservationResponseDTO(1, "Reservation 1", "123456789", 10, LocalDate.now(), List.of("Activity 1", "Activity 2"));
         ReservationResponseDTO reservation2 = new ReservationResponseDTO(2, "Reservation 2", "987654321", 5, LocalDate.now(), List.of("Activity 3"));
         when(reservationService.getAllReservations()).thenReturn(Arrays.asList(reservation1, reservation2));
 
-        // Act & Assert
         mockMvc.perform(get("/reservations"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
@@ -60,12 +58,12 @@ class ReservationControllerTest {
 
     @Test
     void getReservationByIdReturnsReservation() throws Exception {
-        // Arrange
+
         Reservation reservation = new Reservation();
         reservation.setName("Test Reservation");
         when(reservationService.getReservationById(1)).thenReturn(Optional.of(reservation));
 
-        // Act & Assert
+
         mockMvc.perform(get("/reservations/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Test Reservation"));
@@ -75,10 +73,10 @@ class ReservationControllerTest {
 
     @Test
     void getReservationByIdReturnsNotFound() throws Exception {
-        // Arrange
+
         when(reservationService.getReservationById(1)).thenReturn(Optional.empty());
 
-        // Act & Assert
+
         mockMvc.perform(get("/reservations/1"))
                 .andExpect(status().isNotFound());
 
@@ -87,12 +85,12 @@ class ReservationControllerTest {
 
     @Test
     void createStandardReservationCreatesReservation() throws Exception {
-        // Arrange
+
         Reservation reservation = new Reservation();
         reservation.setName("Test Reservation");
         when(reservationService.createReservation(any(Reservation.class))).thenReturn(reservation);
 
-        // Act & Assert
+
         mockMvc.perform(post("/reservations")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(reservation)))
@@ -104,11 +102,11 @@ class ReservationControllerTest {
 
     @Test
     void createRecurringReservationCreatesReservation() throws Exception {
-        // Arrange
+
         RecurringBowlingReservation recurringReservation = new RecurringBowlingReservation();
         when(reservationService.createRecurringReservation(any(RecurringBowlingReservation.class))).thenReturn(recurringReservation);
 
-        // Act & Assert
+
         mockMvc.perform(post("/reservations/recurring")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(recurringReservation)))
@@ -119,12 +117,12 @@ class ReservationControllerTest {
 
     @Test
     void updateStandardReservationUpdatesReservation() throws Exception {
-        // Arrange
+
         Reservation reservation = new Reservation();
         reservation.setName("Updated Reservation");
         when(reservationService.updateReservationGeneral(anyInt(), any(Reservation.class))).thenReturn(reservation);
 
-        // Act & Assert
+
         mockMvc.perform(put("/reservations/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(reservation)))
@@ -136,7 +134,7 @@ class ReservationControllerTest {
 
     @Test
     void deleteReservationDeletesReservation() throws Exception {
-        // Act & Assert
+
         mockMvc.perform(delete("/reservations/1"))
                 .andExpect(status().isOk());
 

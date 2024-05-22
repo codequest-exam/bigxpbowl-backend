@@ -1,5 +1,6 @@
-package kea.exam.xpbowlingbackend.activity;
+package kea.exam.xpbowlingbackend.activities;
 
+import kea.exam.xpbowlingbackend.activity.ActivityService;
 import kea.exam.xpbowlingbackend.activity.entities.Activity;
 import kea.exam.xpbowlingbackend.activity.repositories.ActivityRepository;
 import org.junit.jupiter.api.BeforeEach;
