@@ -16,18 +16,12 @@ import java.time.LocalTime;
 @Getter
 @Setter
 public class RecurringBowlingReservation extends BookingDetails {
-
-    @ManyToOne
-    private BowlingLane bowlingLane;
-
     @Enumerated(EnumType.STRING)
     private DayOfWeek dayOfWeek;
-
     private LocalTime startTime;
     private LocalTime endTime;
 
-    public RecurringBowlingReservation(BowlingLane bowlingLane, LocalTime startTime, LocalTime endTime, DayOfWeek dayOfWeek, String number, String name, int i) {
-        this.bowlingLane = bowlingLane;
+    public RecurringBowlingReservation(LocalTime startTime, LocalTime endTime, DayOfWeek dayOfWeek, String number, String name, int i) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.dayOfWeek = dayOfWeek;

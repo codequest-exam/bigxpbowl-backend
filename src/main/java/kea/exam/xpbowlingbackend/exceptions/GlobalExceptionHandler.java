@@ -13,4 +13,10 @@ public class GlobalExceptionHandler {
         System.out.println(ex.getReason());
         throw new ResponseStatusException (ex.getStatusCode(),ex.getReason());
     }
+
+    @ExceptionHandler(TimeSlotNotAvailableException.class)
+    public ResponseEntity<String> handleTimeSlotNotAvailableException(TimeSlotNotAvailableException ex) {
+
+        return ResponseEntity.status(400).body(ex.getMessage());
+    }
 }

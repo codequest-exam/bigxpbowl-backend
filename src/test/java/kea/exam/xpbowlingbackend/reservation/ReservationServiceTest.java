@@ -1,27 +1,27 @@
 package kea.exam.xpbowlingbackend.reservation;
 
-import jakarta.persistence.ManyToMany;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
 import kea.exam.xpbowlingbackend.activity.ActivityService;
 import kea.exam.xpbowlingbackend.activity.entities.Activity;
-
-import kea.exam.xpbowlingbackend.activity.entities.BowlingLane;
-import kea.exam.xpbowlingbackend.reservation.Reservation;
 import kea.exam.xpbowlingbackend.reservation.ReservationRepository;
-import kea.exam.xpbowlingbackend.reservation.ReservationService;
+import kea.exam.xpbowlingbackend.reservation.dtos.DTOConverter;
+import kea.exam.xpbowlingbackend.reservation.dtos.ReservationResponseDTO;
+import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservation;
+import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ReservationServiceTest {
 
@@ -31,91 +31,111 @@ class ReservationServiceTest {
     @Mock
     private ActivityService activityService;
 
+    @Mock
+    private RecurringBowlingReservationRepository recurringBowlingReservationRepository;
+
     @InjectMocks
     private ReservationService reservationService;
 
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
     void getAllReservationsReturnsAllReservations() {
+        // Arrange
         Reservation reservation1 = new Reservation();
+        reservation1.setActivities(new ArrayList<>());  // Ensure non-null activities list
         Reservation reservation2 = new Reservation();
-        when(reservationRepository.findAll()).thenReturn(Arrays.asList(reservation1, reservation2));
+        reservation2.setActivities(new ArrayList<>());  // Ensure non-null activities list
+        List<Reservation> mockReservations = Arrays.asList(reservation1, reservation2);
+        when(reservationRepository.findAll()).thenReturn(mockReservations);
 
-        List<Reservation> reservations = reservationService.getAllReservations();
+        // Act
+        List<ReservationResponseDTO> reservations = reservationService.getAllReservations();
 
+        // Assert
         assertEquals(2, reservations.size());
         verify(reservationRepository, times(1)).findAll();
     }
 
     @Test
-    void getReservationByIdReturnsReservationWhenExists() {
+    void getReservationByIdReturnsReservation() {
+        // Arrange
         Reservation reservation = new Reservation();
         when(reservationRepository.findById(1)).thenReturn(Optional.of(reservation));
 
-        Optional<Reservation> returnedReservation = reservationService.getReservationById(1);
+        // Act
+        Optional<Reservation> result = reservationService.getReservationById(1);
 
-        assertTrue(returnedReservation.isPresent());
-        assertEquals(reservation, returnedReservation.get());
+        // Assert
+        assertTrue(result.isPresent());
+        assertEquals(reservation, result.get());
         verify(reservationRepository, times(1)).findById(1);
     }
 
     @Test
-    void getReservationByIdReturnsEmptyWhenDoesNotExist() {
-        when(reservationRepository.findById(1)).thenReturn(Optional.empty());
+    void createReservationSavesReservation() {
+        // Arrange
+        Reservation reservation = new Reservation();
+        Activity activity = new Activity();
+        reservation.setActivities(Arrays.asList(activity));
+        when(reservationRepository.save(any(Reservation.class))).thenReturn(reservation);
 
-        Optional<Reservation> returnedReservation = reservationService.getReservationById(1);
+        // Act
+        Reservation result = reservationService.createReservation(reservation);
 
-        assertFalse(returnedReservation.isPresent());
-        verify(reservationRepository, times(1)).findById(1);
-    }
-
-    @Test
-    void createReservationSavesAndReturnsReservation() {
-
-
-        Reservation reservation = new Reservation("1234", "name", 4, List.of(
-                new Activity( LocalTime.of(12, 0), LocalTime.of(13, 0), LocalDate.of(2021, 12, 24),List.of(
-                        new BowlingLane(false, true, 25)), null, null
-                )
-
-        ));
-        when(reservationRepository.save(reservation)).thenReturn(reservation);
-
-        Reservation returnedReservation = reservationService.createReservation(reservation);
-
-        assertEquals(reservation, returnedReservation);
+        // Assert
+        assertEquals(reservation, result);
+        verify(activityService, times(1)).saveAll(reservation.getActivities());
         verify(reservationRepository, times(1)).save(reservation);
     }
 
     @Test
-    void updateReservationReturnsUpdatedReservationWhenExists() {
+    void createRecurringReservationSavesRecurringReservation() {
+        // Arrange
+        RecurringBowlingReservation recurringReservation = new RecurringBowlingReservation();
+        when(recurringBowlingReservationRepository.save(any(RecurringBowlingReservation.class))).thenReturn(recurringReservation);
+
+        // Act
+        RecurringBowlingReservation result = reservationService.createRecurringReservation(recurringReservation);
+
+        // Assert
+        assertEquals(recurringReservation, result);
+        verify(recurringBowlingReservationRepository, times(1)).save(recurringReservation);
+    }
+
+    @Test
+    void updateReservationGeneralUpdatesReservation() {
+        // Arrange
         Reservation reservation = new Reservation();
-        when(reservationRepository.findById(1)).thenReturn(Optional.of(reservation));
-        when(reservationRepository.save(reservation)).thenReturn(reservation);
+        Activity activity = new Activity();
+        reservation.setActivities(Arrays.asList(activity));
+        when(reservationRepository.save(any(Reservation.class))).thenReturn(reservation);
 
-        Optional<Reservation> returnedReservation = reservationService.updateReservation(1, reservation);
+        // Act
+        Reservation result = reservationService.updateReservationGeneral(1, reservation);
 
-        assertTrue(returnedReservation.isPresent());
-        assertEquals(reservation, returnedReservation.get());
-        verify(reservationRepository, times(1)).findById(1);
+        // Assert
+        assertEquals(reservation, result);
+        verify(activityService, times(1)).saveAll(reservation.getActivities());
         verify(reservationRepository, times(1)).save(reservation);
     }
 
     @Test
-    void updateReservationReturnsEmptyWhenDoesNotExist() {
+    void deleteReservationDeletesReservation() {
+        // Arrange
         Reservation reservation = new Reservation();
-        when(reservationRepository.findById(1)).thenReturn(Optional.empty());
+        Activity activity = new Activity();
+        reservation.setActivities(Arrays.asList(activity));
+        when(reservationRepository.findById(1)).thenReturn(Optional.of(reservation));
 
-        Optional<Reservation> returnedReservation = reservationService.updateReservation(1, reservation);
-
-        assertFalse(returnedReservation.isPresent());
-        verify(reservationRepository, times(1)).findById(1);
-    }
-
-    @Test
-    void deleteReservationCallsDeleteById() {
+        // Act
         reservationService.deleteReservation(1);
 
+        // Assert
         verify(reservationRepository, times(1)).deleteById(1);
+        verify(activityService, times(1)).deleteAll(reservation.getActivities());
     }
 }

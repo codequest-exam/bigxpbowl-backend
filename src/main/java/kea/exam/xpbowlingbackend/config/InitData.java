@@ -13,39 +13,20 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 @Component
 public class InitData implements CommandLineRunner {
-
-    private final BowlingLaneRepository bowlingLaneRepository;
-    private final AirhockeyTableRepository airhockeyTableRepository;
-    //private final ActivityTypeRepository activityTypeRepository;
     private final ActivityRepository activityRepository;
     private final ReservationRepository reservationRepository;
-    private final DiningTableRepository diningTableRepository;
     private final RecurringBowlingReservationRepository recurringBowlingReservationRepository;
     private final CompetitionDayRepository competitionDayRepository;
 
-//    private ActivityType bowling = ActivityType.BOWLING;
-//    private ActivityType airhockey = ActivityType.AIRHOCKEY;
-//    private ActivityType dining = ActivityType.DINING;
-
-    private final List<BowlingLane> bowlingLanes = new ArrayList<>();
-    private final List<AirhockeyTable> airhockeyTables = new ArrayList<>();
-    private final List<DiningTable> diningTables = new ArrayList<>();
-    private final List<Activity> bowlingActivities = new ArrayList<>();
-    private final List<Activity> airhockeyActivities = new ArrayList<>();
-    private final List<Activity> diningActivities = new ArrayList<>();
-
-
     public InitData(CompetitionDayRepository competitionDayRepository, RecurringBowlingReservationRepository recurringBowlingReservationRepository, ReservationRepository reservationRepository, BowlingLaneRepository bowlingLaneRepository, AirhockeyTableRepository airhockeyTableRepository, ActivityRepository activityRepository, DiningTableRepository diningTableRepository) {
         this.reservationRepository = reservationRepository;
-        this.bowlingLaneRepository = bowlingLaneRepository;
-        // this.activityTypeRepository = activityTypeRepository;
-        this.airhockeyTableRepository = airhockeyTableRepository;
         this.activityRepository = activityRepository;
-        this.diningTableRepository = diningTableRepository;
         this.recurringBowlingReservationRepository = recurringBowlingReservationRepository;
         this.competitionDayRepository = competitionDayRepository;
     }
@@ -53,13 +34,9 @@ public class InitData implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         // TODO: Add init data to all repositories
-        initTypes();
-        initDiningTables();
-        initAirhockeyTables();
-        initBowlingLanes();
         initCompetitionDays();
         initRecurringReservations();
-        initActivities();
+       initActivities();
         initReservations();
     }
 
@@ -80,82 +57,51 @@ public class InitData implements CommandLineRunner {
                 if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {
                     continue;
                 }
-                tempReservations.add(new RecurringBowlingReservation(bowlingLanes.get(i), LocalTime.of(10, 0), LocalTime.of(17, 0), day, "12345678", "John Doe", 4));
+                tempReservations.add(new RecurringBowlingReservation(LocalTime.of(10, 0), LocalTime.of(17, 0), day, "12345678", "John Doe", 4));
             }
         }
         recurringBowlingReservationRepository.saveAll(tempReservations);
     }
+    public void initActivities() {
+        List<Activity> activities = Arrays.asList(
+                new Activity(LocalTime.of(10, 0), LocalTime.of(11, 0), LocalDate.now(), ActivityType.BOWLING, 1),
+                new Activity(LocalTime.of(11, 0), LocalTime.of(13, 0), LocalDate.now(), ActivityType.DINING, 1),
+                new Activity(LocalTime.of(13, 0), LocalTime.of(15, 0), LocalDate.now(), ActivityType.AIRHOCKEY, 1),
+                new Activity(LocalTime.of(15, 0), LocalTime.of(17, 0), LocalDate.now(), ActivityType.BOWLING, 1),
+                new Activity(LocalTime.of(17, 0), LocalTime.of(19, 0), LocalDate.now(), ActivityType.DINING, 1),
+                new Activity(LocalTime.of(19, 0), LocalTime.of(21, 0), LocalDate.now(), ActivityType.AIRHOCKEY, 1)
+        );
 
-    private void initTypes() {
-//        bowling = activityTypeRepository.save(new ActivityType("bowling"));
-//        airhockey = activityTypeRepository.save(new ActivityType("airhockey"));
-//        dining = activityTypeRepository.save(new ActivityType("dining"));
+        activityRepository.saveAll(activities);
     }
+    public void initReservations() {
+        List<Activity> activities = activityRepository.findAll();
+        Random random = new Random();
 
-    private void initBowlingLanes() {
-        List<BowlingLane> tempLanes = new ArrayList<>();
-        for (int i = 0; i < 24; i++) {
-            tempLanes.add(new BowlingLane(false, i > 19, i + 1));
-        }
-        bowlingLanes.addAll(bowlingLaneRepository.saveAll(tempLanes));
-    }
+        Reservation reservation1 = new Reservation();
+        reservation1.setPhoneNumber("123-456-7891");
+        reservation1.setName("Alice Johnson");
+        reservation1.setParticipants(random.nextInt(5) + 1);
+        reservation1.setActivities(activities.subList(0, 2));
 
-    private void initAirhockeyTables() {
-        List<AirhockeyTable> tempTables = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            tempTables.add(new AirhockeyTable(false, i + 1));
-        }
-        airhockeyTables.addAll(airhockeyTableRepository.saveAll(tempTables));
-    }
+        Reservation reservation2 = new Reservation();
+        reservation2.setPhoneNumber("123-456-7892");
+        reservation2.setName("Bob Smith");
+        reservation2.setParticipants(random.nextInt(5) + 1);
+        reservation2.setActivities(activities.subList(2, 4));
 
-    private void initDiningTables() {
-        List<DiningTable> tempTables = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            tempTables.add(new DiningTable(false, i + 1));
-        }
-        diningTables.addAll(diningTableRepository.saveAll(tempTables));
-    }
+        Reservation reservation3 = new Reservation();
+        reservation3.setPhoneNumber("123-456-7893");
+        reservation3.setName("Charlie Brown");
+        reservation3.setParticipants(random.nextInt(5) + 1);
+        reservation3.setActivities(activities.subList(4, 6));
 
-    private void initReservations() {
-        List<Reservation> tempReservations = new ArrayList<>();
 
-        for (int i = 0; i < bowlingActivities.size(); i++) {
-            if (airhockeyActivities.size() > i && diningActivities.size() > i) {
-                tempReservations.add(new Reservation("12345678", "John Doe", 4, List.of(bowlingActivities.get(i), airhockeyActivities.get(i), diningActivities.get(i))));
-            } else if (diningActivities.size() > i) {
-                tempReservations.add(new Reservation("12345678", "John Doe", 4, List.of(bowlingActivities.get(i), diningActivities.get(i))));
-            } else {
-                tempReservations.add(new Reservation("12345678", "John Doe", 4, List.of(bowlingActivities.get(i))));
-            }
-        }
-
-        reservationRepository.saveAll(tempReservations);
-    }
-
-    private void initActivities() {
-        List<Activity> tempBowling = new ArrayList<>();
-        List<Activity> tempAirhockey = new ArrayList<>();
-        List<Activity> tempDining = new ArrayList<>();
-
-        for (int i = 0; i < 24; i++) {
-            for (int j = 0; j < 6; j++) {
-                tempBowling.add(new Activity(LocalTime.of(9 + j, 0), LocalTime.of(10 + j, 0), LocalDate.of(2024, 5, 1 + i), List.of(bowlingLanes.get(i)), null, null));
-            }
-        }
-
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 6; j++) {
-                tempAirhockey.add(new Activity(LocalTime.of(9 + j, 0), LocalTime.of(10 + j, 0), LocalDate.of(2024, 5, 1 + i), null, null, List.of(airhockeyTables.get(i))));
-            }
-        }
-
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 6; j++) {
-                tempDining.add(new Activity(LocalTime.of(9 + j, 0), LocalTime.of(10 + j, 0), LocalDate.of(2024, 5, 1 + i), null, List.of(diningTables.get(i)), null));
-            }
-        }
-        bowlingActivities.addAll(activityRepository.saveAll(tempBowling));
-        airhockeyActivities.addAll(activityRepository.saveAll(tempAirhockey));
-        diningActivities.addAll(activityRepository.saveAll(tempDining));
+        List<Reservation> reservations = Arrays.asList(reservation1, reservation2, reservation3);
+        reservationRepository.saveAll(reservations);
     }
 }
+
+
+
+

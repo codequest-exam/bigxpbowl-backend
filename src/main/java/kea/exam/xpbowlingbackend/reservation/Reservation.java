@@ -1,6 +1,7 @@
 package kea.exam.xpbowlingbackend.reservation;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import kea.exam.xpbowlingbackend.activity.entities.Activity;
@@ -20,10 +21,10 @@ public class Reservation extends BookingDetails {
     @OneToMany
     private List<Activity> activities;
 
-    public Reservation(String phoneNumber, String name, int particpants, List<Activity> activities) {
+    public Reservation(String phoneNumber, String name, int participants, List<Activity> activities) {
         this.phoneNumber = phoneNumber;
         this.name = name;
-        this.participants = particpants;
+        this.participants = participants;
         this.activities = activities;
     }
 
