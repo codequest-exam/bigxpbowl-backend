@@ -2,6 +2,8 @@ package kea.exam.xpbowlingbackend.config;
 
 import kea.exam.xpbowlingbackend.activity.entities.*;
 import kea.exam.xpbowlingbackend.activity.repositories.*;
+import kea.exam.xpbowlingbackend.reservation.competition.CompetitionDay;
+import kea.exam.xpbowlingbackend.reservation.competition.CompetitionDayRepository;
 import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservation;
 import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservationRepository;
 import kea.exam.xpbowlingbackend.reservation.Reservation;
