@@ -4,6 +4,8 @@ package kea.exam.xpbowlingbackend.reservation;
 import kea.exam.xpbowlingbackend.activity.ActivityService;
 import kea.exam.xpbowlingbackend.activity.dtos.ActivityResponseDTO;
 import kea.exam.xpbowlingbackend.activity.entities.Activity;
+import kea.exam.xpbowlingbackend.reservation.competition.CompetitionDay;
+import kea.exam.xpbowlingbackend.reservation.competition.CompetitionDayRepository;
 import kea.exam.xpbowlingbackend.reservation.dtos.DTOConverter;
 import kea.exam.xpbowlingbackend.reservation.dtos.ReservationResponseDTO;
 import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservation;
@@ -21,11 +23,13 @@ public class ReservationService {
     ActivityService activityService;
 
     RecurringBowlingReservationRepository recurringBowlingReservationRepository;
+    CompetitionDayRepository competitionDayRepository;
 
-    public ReservationService(ReservationRepository reservationRepository, ActivityService activityService, RecurringBowlingReservationRepository recurringBowlingReservationRepository) {
+    public ReservationService(ReservationRepository reservationRepository, ActivityService activityService, RecurringBowlingReservationRepository recurringBowlingReservationRepository, CompetitionDayRepository competitionDayRepository) {
         this.reservationRepository = reservationRepository;
         this.activityService = activityService;
         this.recurringBowlingReservationRepository = recurringBowlingReservationRepository;
+        this.competitionDayRepository = competitionDayRepository;
     }
 
     public List<ReservationResponseDTO> getAllReservations() {
@@ -33,6 +37,12 @@ public class ReservationService {
         return reservations.stream()
                 .map(DTOConverter::convertToDTO)
                 .collect(Collectors.toList());
+    }
+    public List<RecurringBowlingReservation> getAllRecurringReservations() {
+        return recurringBowlingReservationRepository.findAll();
+    }
+    public List<CompetitionDay> getAllCompetitionDays(){
+        return competitionDayRepository.findAll();
     }
 
     public Optional<Reservation> getReservationById(int id) {

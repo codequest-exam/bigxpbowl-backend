@@ -1,5 +1,6 @@
 package kea.exam.xpbowlingbackend.reservation;
 
+import kea.exam.xpbowlingbackend.reservation.competition.CompetitionDay;
 import kea.exam.xpbowlingbackend.reservation.dtos.ReservationResponseDTO;
 import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservation;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,14 @@ public class ReservationController {
     @GetMapping
     public List<ReservationResponseDTO> getAllReservations(){
         return reservationService.getAllReservations();
+    }
+    @GetMapping("/recurring")
+    public List<RecurringBowlingReservation> getAllRecurringReservations(){
+        return reservationService.getAllRecurringReservations();
+    }
+    @GetMapping("/competition-day")
+    public List<CompetitionDay> getAllCompetitionDays(){
+        return reservationService.getAllCompetitionDays();
     }
 
     @GetMapping("/{id}")

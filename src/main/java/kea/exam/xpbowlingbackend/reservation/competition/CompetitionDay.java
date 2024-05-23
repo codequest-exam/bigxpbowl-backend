@@ -1,4 +1,4 @@
-package kea.exam.xpbowlingbackend.activity.entities;
+package kea.exam.xpbowlingbackend.reservation.competition;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
