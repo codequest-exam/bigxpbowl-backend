@@ -10,7 +10,8 @@ public class WebConfig {
 
     private static final String[] ALLOWED_ORIGINS = new String[] {
             "http://localhost:5173",
-            "http://localhost:8080"
+            "http://localhost:8080",
+            "https://blue-tree-03eba7903.5.azurestaticapps.net/"
     };
 
     @Bean
