@@ -34,6 +34,9 @@ public class ReservationService {
                 .map(DTOConverter::convertToDTO)
                 .collect(Collectors.toList());
     }
+    public List<RecurringBowlingReservation> getAllRecurringReservations() {
+        return recurringBowlingReservationRepository.findAll();
+    }
 
     public Optional<Reservation> getReservationById(int id) {
         return reservationRepository.findById(id);

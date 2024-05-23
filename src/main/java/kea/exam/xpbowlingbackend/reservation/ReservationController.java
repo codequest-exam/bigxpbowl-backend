@@ -24,6 +24,10 @@ public class ReservationController {
     public List<ReservationResponseDTO> getAllReservations(){
         return reservationService.getAllReservations();
     }
+    @GetMapping("/recurring")
+    public List<RecurringBowlingReservation> getAllRecurringReservations(){
+        return reservationService.getAllRecurringReservations();
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Reservation> getReservationById(@PathVariable int id){
