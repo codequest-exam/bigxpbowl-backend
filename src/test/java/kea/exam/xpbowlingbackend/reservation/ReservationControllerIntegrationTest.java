@@ -22,12 +22,22 @@ public class ReservationControllerIntegrationTest {
         ResponseEntity<ReservationResponseDTO[]> response = restTemplate.getForEntity("/reservations", ReservationResponseDTO[].class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody()).isNotEmpty();
     }
 
     @Test
     public void getReservationByIdReturnsReservation() {
-        ResponseEntity<Reservation> response = restTemplate.getForEntity("/reservations/71", Reservation.class);
+        // First create a reservation to ensure it exists
+        Reservation reservation = new Reservation();
+        reservation.setName("Test Reservation");
+        ResponseEntity<Reservation> postResponse = restTemplate.postForEntity("/reservations", reservation, Reservation.class);
+
+        assertThat(postResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(postResponse.getBody()).isNotNull();
+
+        int reservationId = postResponse.getBody().getId();
+
+        ResponseEntity<Reservation> response = restTemplate.getForEntity("/reservations/" + reservationId, Reservation.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
@@ -50,30 +60,61 @@ public class ReservationControllerIntegrationTest {
 
         ResponseEntity<RecurringBowlingReservation> response = restTemplate.postForEntity("/reservations/recurring", recurringReservation, RecurringBowlingReservation.class);
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK); // Should be CREATED
         assertThat(response.getBody()).isNotNull();
     }
 
     @Test
     public void updateStandardReservationUpdatesReservation() {
-        ResponseEntity<Reservation> getResponse = restTemplate.getForEntity("/reservations/72", Reservation.class);
-        Reservation reservation = getResponse.getBody();
+        // First create a reservation to ensure it exists
+        Reservation reservation = new Reservation();
+        reservation.setName("Test Reservation");
+        ResponseEntity<Reservation> postResponse = restTemplate.postForEntity("/reservations", reservation, Reservation.class);
 
-        reservation.setName("Updated Reservation");
-        restTemplate.put("/reservations/72", reservation, Reservation.class);
+        assertThat(postResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(postResponse.getBody()).isNotNull();
 
-        ResponseEntity<Reservation> updatedResponse = restTemplate.getForEntity("/reservations/72", Reservation.class);
+        int reservationId = postResponse.getBody().getId();
+
+        // Debugging: Log the ID and initial name
+        System.out.println("Created Reservation ID: " + reservationId);
+        System.out.println("Initial Name: " + postResponse.getBody().getName());
+
+        // Update the reservation
+        Reservation updatedReservation = new Reservation();
+        updatedReservation.setId(reservationId); // Set the ID explicitly
+        updatedReservation.setName("Updated Reservation");
+        restTemplate.put("/reservations/" + reservationId, updatedReservation);
+
+        // Debugging: Fetch the reservation again after update
+        ResponseEntity<Reservation> fetchResponse = restTemplate.getForEntity("/reservations/" + reservationId, Reservation.class);
+        System.out.println("Fetched after update - Name: " + fetchResponse.getBody().getName());
+
+        // Get the updated reservation
+        ResponseEntity<Reservation> updatedResponse = restTemplate.getForEntity("/reservations/" + reservationId, Reservation.class);
 
         assertThat(updatedResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(updatedResponse.getBody()).isNotNull();
         assertThat(updatedResponse.getBody().getName()).isEqualTo("Updated Reservation");
     }
 
+
     @Test
     public void deleteReservationDeletesReservation() {
-        restTemplate.delete("/reservations/71");
+        // First create a reservation to ensure it exists
+        Reservation reservation = new Reservation();
+        reservation.setName("Test Reservation");
+        ResponseEntity<Reservation> postResponse = restTemplate.postForEntity("/reservations", reservation, Reservation.class);
 
-        ResponseEntity<Reservation> response = restTemplate.getForEntity("/reservations/71", Reservation.class);
+        assertThat(postResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(postResponse.getBody()).isNotNull();
+
+        int reservationId = postResponse.getBody().getId();
+
+        // Delete the reservation
+        restTemplate.delete("/reservations/" + reservationId);
+
+        ResponseEntity<Reservation> response = restTemplate.getForEntity("/reservations/" + reservationId, Reservation.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
