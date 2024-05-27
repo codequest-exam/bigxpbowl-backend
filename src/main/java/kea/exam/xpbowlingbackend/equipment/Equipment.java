@@ -17,4 +17,8 @@ public class Equipment {
     private int id;
     private String name;
     private int stock;
+    public Equipment(String name, int stock) {
+        this.name = name;
+        this.stock = stock;
+    }
 }

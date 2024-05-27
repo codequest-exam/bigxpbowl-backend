@@ -1,7 +1,9 @@
 package kea.exam.xpbowlingbackend.equipment;
 
-import java.util.List;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+@Service
 public class EquipmentService {
     EquipmentRepository equipmentRepository;
     public EquipmentService(EquipmentRepository equipmentRepository) {

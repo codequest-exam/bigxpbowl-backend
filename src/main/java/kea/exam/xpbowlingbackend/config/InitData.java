@@ -2,6 +2,8 @@ package kea.exam.xpbowlingbackend.config;
 
 import kea.exam.xpbowlingbackend.activity.entities.*;
 import kea.exam.xpbowlingbackend.activity.repositories.*;
+import kea.exam.xpbowlingbackend.equipment.Equipment;
+import kea.exam.xpbowlingbackend.equipment.EquipmentRepository;
 import kea.exam.xpbowlingbackend.reservation.competition.CompetitionDay;
 import kea.exam.xpbowlingbackend.reservation.competition.CompetitionDayRepository;
 import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservation;
@@ -25,12 +27,14 @@ public class InitData implements CommandLineRunner {
     private final ReservationRepository reservationRepository;
     private final RecurringBowlingReservationRepository recurringBowlingReservationRepository;
     private final CompetitionDayRepository competitionDayRepository;
+    private final EquipmentRepository equipmentRepository;
 
-    public InitData(CompetitionDayRepository competitionDayRepository, RecurringBowlingReservationRepository recurringBowlingReservationRepository, ReservationRepository reservationRepository, BowlingLaneRepository bowlingLaneRepository, AirhockeyTableRepository airhockeyTableRepository, ActivityRepository activityRepository, DiningTableRepository diningTableRepository) {
+    public InitData(CompetitionDayRepository competitionDayRepository, RecurringBowlingReservationRepository recurringBowlingReservationRepository, ReservationRepository reservationRepository, BowlingLaneRepository bowlingLaneRepository, AirhockeyTableRepository airhockeyTableRepository, ActivityRepository activityRepository, DiningTableRepository diningTableRepository, EquipmentRepository equipmentRepository) {
         this.reservationRepository = reservationRepository;
         this.activityRepository = activityRepository;
         this.recurringBowlingReservationRepository = recurringBowlingReservationRepository;
         this.competitionDayRepository = competitionDayRepository;
+        this.equipmentRepository = equipmentRepository;
     }
 
     @Override
@@ -40,6 +44,7 @@ public class InitData implements CommandLineRunner {
         initRecurringReservations();
        initActivities();
         initReservations();
+        initEquipment();
     }
 
     private void initCompetitionDays() {
@@ -50,6 +55,21 @@ public class InitData implements CommandLineRunner {
             }
         }
         competitionDayRepository.saveAll(tempDays);
+    }
+    private void initEquipment() {
+        List<Equipment> equipmentList = Arrays.asList(
+                new Equipment("Bowling Shoes (Men)", 50),
+                new Equipment("Bowling Shoes (Women)", 50),
+                new Equipment("Bowling Balls (Lightweight)", 30),
+                new Equipment("Bowling Balls (Mediumweight)", 30),
+                new Equipment("Bowling Balls (Heavyweight)", 30),
+                new Equipment("Air Hockey Tables", 5),
+                new Equipment("Air Hockey Paddles", 20),
+                new Equipment("Air Hockey Pucks", 50),
+                new Equipment("Dining Tables", 10),
+                new Equipment("Dining Chairs", 40)
+        );
+        equipmentRepository.saveAll(equipmentList);
     }
 
     private void initRecurringReservations() {
