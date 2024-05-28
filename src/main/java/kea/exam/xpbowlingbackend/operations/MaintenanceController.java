@@ -1,6 +1,7 @@
 package kea.exam.xpbowlingbackend.operations;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,4 +18,7 @@ public class MaintenanceController {
     public AllMaintainablesResponseDTO getAllMaintainables() {
         return maintenanceService.getAllMaintainables();
     }
+
+    // TODO: Find the best way to change maintenance state of a maintainable
+    //@PostMapping("/")
 }

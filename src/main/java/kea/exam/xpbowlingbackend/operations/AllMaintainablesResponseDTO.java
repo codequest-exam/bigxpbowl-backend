@@ -6,5 +6,5 @@ import kea.exam.xpbowlingbackend.activity.entities.DiningTable;
 
 import java.util.List;
 
-public record AllMaintainablesResponseDTO(List<BowlingLane> bowlingLanes, List<DiningTable> diningTables, List<AirhockeyTable> airhockeyTables) {
+public record AllMaintainablesResponseDTO(List<BowlingLane> bowlingLanes, List<DiningTable> diningTables, List<AirhockeyTable> airHockeyTables) {
 }
