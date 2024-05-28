@@ -2,12 +2,17 @@ package kea.exam.xpbowlingbackend.config;
 
 import kea.exam.xpbowlingbackend.activity.entities.*;
 import kea.exam.xpbowlingbackend.activity.repositories.*;
+import kea.exam.xpbowlingbackend.equipment.Equipment;
+import kea.exam.xpbowlingbackend.equipment.EquipmentRepository;
+import kea.exam.xpbowlingbackend.product.Product;
+import kea.exam.xpbowlingbackend.product.ProductRepository;
 import kea.exam.xpbowlingbackend.reservation.competition.CompetitionDay;
 import kea.exam.xpbowlingbackend.reservation.competition.CompetitionDayRepository;
 import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservation;
 import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservationRepository;
 import kea.exam.xpbowlingbackend.reservation.Reservation;
 import kea.exam.xpbowlingbackend.reservation.ReservationRepository;
+import kea.exam.xpbowlingbackend.staff.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -25,12 +30,34 @@ public class InitData implements CommandLineRunner {
     private final ReservationRepository reservationRepository;
     private final RecurringBowlingReservationRepository recurringBowlingReservationRepository;
     private final CompetitionDayRepository competitionDayRepository;
+    private final EquipmentRepository equipmentRepository;
 
-    public InitData(CompetitionDayRepository competitionDayRepository, RecurringBowlingReservationRepository recurringBowlingReservationRepository, ReservationRepository reservationRepository, BowlingLaneRepository bowlingLaneRepository, AirhockeyTableRepository airhockeyTableRepository, ActivityRepository activityRepository, DiningTableRepository diningTableRepository) {
+    private final BowlingLaneRepository bowlingLaneRepository;
+    private final AirhockeyTableRepository airhockeyTableRepository;
+    private final DiningTableRepository diningTableRepository;
+    private final ProductRepository productRepository;
+
+    private final StaffRepository staffRepository;
+    private final ShiftRepository shiftRepository;
+
+    private final List<BowlingLane> bowlingLanes = new ArrayList<>();
+    private final List<AirhockeyTable> airhockeyTables = new ArrayList<>();
+    private final List<DiningTable> diningTables = new ArrayList<>();
+    private final List<Product> products = new ArrayList<>();
+    private final List<Staff> staff = new ArrayList<>();
+
+    public InitData(ShiftRepository shiftRepository, StaffRepository staffRepository,ProductRepository productRepository ,CompetitionDayRepository competitionDayRepository, RecurringBowlingReservationRepository recurringBowlingReservationRepository, ReservationRepository reservationRepository, BowlingLaneRepository bowlingLaneRepository, AirhockeyTableRepository airhockeyTableRepository, ActivityRepository activityRepository, DiningTableRepository diningTableRepository, EquipmentRepository equipmentRepository) {
         this.reservationRepository = reservationRepository;
         this.activityRepository = activityRepository;
         this.recurringBowlingReservationRepository = recurringBowlingReservationRepository;
         this.competitionDayRepository = competitionDayRepository;
+        this.equipmentRepository = equipmentRepository;
+        this.bowlingLaneRepository = bowlingLaneRepository;
+        this.airhockeyTableRepository = airhockeyTableRepository;
+        this.diningTableRepository = diningTableRepository;
+        this.productRepository = productRepository;
+        this.staffRepository = staffRepository;
+        this.shiftRepository = shiftRepository;
     }
 
     @Override
@@ -40,6 +67,84 @@ public class InitData implements CommandLineRunner {
         initRecurringReservations();
        initActivities();
         initReservations();
+        initEquipment();
+        initBowlingLanes();
+        initAirhockeyTables();
+        initDiningTables();
+        initProducts();
+        initStaff();
+        initShifts();
+    }
+
+    private void initStaff() {
+        staff.add(new Staff("Laurits", StaffRoles.MANAGER));
+        staff.add(new Staff("Henriette", StaffRoles.MANAGER));
+
+        staff.add(new Staff("Mikkel", StaffRoles.EMPLOYEE));
+        staff.add(new Staff("Victor", StaffRoles.EMPLOYEE));
+        staff.add(new Staff("Liselotte", StaffRoles.EMPLOYEE));
+        staff.add(new Staff("Emma", StaffRoles.EMPLOYEE));
+        staff.add(new Staff("Sigrid", StaffRoles.EMPLOYEE));
+        staff.add(new Staff("Marcus", StaffRoles.EMPLOYEE));
+        staff.add(new Staff("Joakim", StaffRoles.EMPLOYEE));
+
+        staff.add(new Staff("Louise", StaffRoles.OPERATOR));
+        staff.add(new Staff("Mads", StaffRoles.OPERATOR));
+
+        staffRepository.saveAll(staff);
+    }
+
+    private void initShifts() {
+
+        List<Shift> shifts = new ArrayList<>();
+
+            shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.MONDAY, List.of(staff.get(1), staff.get(3), staff.get(4))));
+            shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.MONDAY, List.of(staff.get(0), staff.get(5), staff.get(6), staff.get(staff.size()-2))));
+
+            shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.TUESDAY, List.of( staff.get(3), staff.get(4), staff.get(staff.size()-1))));
+            shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.TUESDAY, List.of(staff.get(0), staff.get(1), staff.get(2), staff.get(5))));
+
+            shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.WEDNESDAY, List.of(staff.get(1), staff.get(7), staff.get(4))));
+            shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.WEDNESDAY, List.of(staff.get(0), staff.get(5), staff.get(6), staff.get(8))));
+
+            shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.THURSDAY, List.of(staff.get(3), staff.get(4), staff.get(9))));
+            shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.THURSDAY, List.of(staff.get(0), staff.get(1), staff.get(2), staff.get(5))));
+
+            shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.FRIDAY, List.of(staff.get(1), staff.get(3), staff.get(4))));
+            shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.FRIDAY, List.of(staff.get(0), staff.get(5), staff.get(6), staff.get(8))));
+
+            shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.SATURDAY, List.of(staff.get(3), staff.get(4), staff.get(9))));
+            shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.SATURDAY, List.of(staff.get(0), staff.get(1), staff.get(2), staff.get(5))));
+
+            shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.SUNDAY, List.of(staff.get(1), staff.get(3), staff.get(4))));
+            shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.SUNDAY, List.of(staff.get(0), staff.get(5), staff.get(6), staff.get(8))));
+
+        shiftRepository.saveAll(shifts);
+    }
+
+    private void initProducts() {
+        products.add(new Product("Carlsberg classic", 25));
+        products.add(new Product("Coca cola", 20));
+        products.add(new Product("Fanta", 20));
+        products.add(new Product("Sprite", 20));
+        products.add(new Product("Faxe kondi", 20));
+        products.add(new Product("Faxe kondi free", 20));
+        products.add(new Product("Faxe kondi booster", 20));
+        products.add(new Product("Faxe kondi power", 20));
+        products.add(new Product("Faxe kondi max", 20));
+        products.add(new Product("Faxe kondi ultra", 20));
+        products.add(new Product("Faxe kondi extreme", 20));
+        products.add(new Product("Faxe kondi light", 20));
+        products.add(new Product("Faxe kondi zero", 20));
+        products.add(new Product("Faxe kondi sugar free", 20));
+        products.add(new Product("Faxe kondi sugar", 20));
+        products.add(new Product("Local red win", 59));
+        products.add(new Product("Local white wine", 59));
+        products.add(new Product("Local rose wine", 59));
+        products.add(new Product("Martini", 79));
+        products.add(new Product("Mojito", 79));
+
+        productRepository.saveAll(products);
     }
 
     private void initCompetitionDays() {
@@ -50,6 +155,21 @@ public class InitData implements CommandLineRunner {
             }
         }
         competitionDayRepository.saveAll(tempDays);
+    }
+    private void initEquipment() {
+        List<Equipment> equipmentList = Arrays.asList(
+                new Equipment("Bowling Shoes (Men)", 50),
+                new Equipment("Bowling Shoes (Women)", 50),
+                new Equipment("Bowling Balls (Lightweight)", 30),
+                new Equipment("Bowling Balls (Mediumweight)", 30),
+                new Equipment("Bowling Balls (Heavyweight)", 30),
+                new Equipment("Air Hockey Tables", 5),
+                new Equipment("Air Hockey Paddles", 20),
+                new Equipment("Air Hockey Pucks", 50),
+                new Equipment("Dining Tables", 10),
+                new Equipment("Dining Chairs", 40)
+        );
+        equipmentRepository.saveAll(equipmentList);
     }
 
     private void initRecurringReservations() {
@@ -101,6 +221,30 @@ public class InitData implements CommandLineRunner {
 
         List<Reservation> reservations = Arrays.asList(reservation1, reservation2, reservation3);
         reservationRepository.saveAll(reservations);
+    }
+
+    private void initBowlingLanes() {
+        List<BowlingLane> tempLanes = new ArrayList<>();
+        for (int i = 0; i < 24; i++) {
+            tempLanes.add(new BowlingLane(false, i > 19, i + 1));
+        }
+        bowlingLanes.addAll(bowlingLaneRepository.saveAll(tempLanes));
+    }
+
+    private void initAirhockeyTables() {
+        List<AirhockeyTable> tempTables = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            tempTables.add(new AirhockeyTable(false, i + 1));
+        }
+        airhockeyTables.addAll(airhockeyTableRepository.saveAll(tempTables));
+    }
+
+    private void initDiningTables() {
+        List<DiningTable> tempTables = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            tempTables.add(new DiningTable(false, i + 1));
+        }
+        diningTables.addAll(diningTableRepository.saveAll(tempTables));
     }
 }
 
