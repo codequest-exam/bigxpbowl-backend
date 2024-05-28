@@ -1,4 +1,4 @@
-package kea.exam.xpbowlingbackend.equipment;
+package kea.exam.xpbowlingbackend.operations;
 
 import org.springframework.web.bind.annotation.*;
 

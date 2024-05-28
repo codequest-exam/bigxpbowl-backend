@@ -22,6 +22,8 @@ public class BowlingLane {
 
     private boolean childFriendly;
 
+    @Enumerated(EnumType.STRING)
+    private ActivityType activityType = ActivityType.BOWLING;
 
 
     public BowlingLane(boolean maintenance, boolean childFriendly, int laneNumber ) {

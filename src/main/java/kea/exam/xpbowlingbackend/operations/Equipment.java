@@ -1,4 +1,4 @@
-package kea.exam.xpbowlingbackend.equipment;
+package kea.exam.xpbowlingbackend.operations;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

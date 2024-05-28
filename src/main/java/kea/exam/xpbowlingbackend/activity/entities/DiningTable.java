@@ -1,9 +1,7 @@
 package kea.exam.xpbowlingbackend.activity.entities;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,7 +14,8 @@ public class DiningTable {
     @Id
     private int tableNumber;
     private boolean maintenance;
-
+    @Enumerated(EnumType.STRING)
+    private ActivityType activityType = ActivityType.DINING;
 
     public DiningTable( boolean maintenance, int tableNumber) {
         this.maintenance = maintenance;
