@@ -1,9 +1,10 @@
 package kea.exam.xpbowlingbackend.operations;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import kea.exam.xpbowlingbackend.activity.entities.ActivityType;
+import kea.exam.xpbowlingbackend.activity.entities.AirhockeyTable;
+import kea.exam.xpbowlingbackend.activity.entities.BowlingLane;
+import kea.exam.xpbowlingbackend.activity.entities.DiningTable;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/maintenance")
@@ -19,6 +20,20 @@ public class MaintenanceController {
         return maintenanceService.getAllMaintainables();
     }
 
-    // TODO: Find the best way to change maintenance state of a maintainable
-    //@PostMapping("/")
+
+    @GetMapping("/change/BOWLING/{id}")
+    public BowlingLane changeMaintenanceStateBowling(@PathVariable int id) {
+        System.out.println("Changing maintenance with id " + id);
+        return maintenanceService.changeMaintenanceStateBowling(id);
+    }
+    @GetMapping("/change/AIRHOCKEY/{id}")
+    public AirhockeyTable changeMaintenanceStateAirHockey(@PathVariable int id) {
+        System.out.println("Changing maintenance state with id " + id);
+        return maintenanceService.changeMaintenanceStateAirHockey(id);
+    }
+    @GetMapping("/change/DINING/{id}")
+    public DiningTable changeMaintenanceStateDining(@PathVariable int id) {
+        System.out.println("Changing maintenance state with id " + id);
+        return maintenanceService.changeMaintenanceStateDining(id);
+    }
 }

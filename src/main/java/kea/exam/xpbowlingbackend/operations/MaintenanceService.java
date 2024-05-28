@@ -1,6 +1,9 @@
 package kea.exam.xpbowlingbackend.operations;
 
+import kea.exam.xpbowlingbackend.activity.entities.ActivityType;
 import kea.exam.xpbowlingbackend.activity.entities.AirhockeyTable;
+import kea.exam.xpbowlingbackend.activity.entities.BowlingLane;
+import kea.exam.xpbowlingbackend.activity.entities.DiningTable;
 import kea.exam.xpbowlingbackend.activity.repositories.AirhockeyTableRepository;
 import kea.exam.xpbowlingbackend.activity.repositories.BowlingLaneRepository;
 import kea.exam.xpbowlingbackend.activity.repositories.DiningTableRepository;
@@ -25,5 +28,24 @@ public class MaintenanceService {
                 diningTableRepository.findAll(),
                 airhockeyTableRepository.findAll()
         );
+    }
+
+
+    public DiningTable changeMaintenanceStateDining(int id) {
+        DiningTable diningTable = diningTableRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No dining table with id " + id + " found"));
+        diningTable.setMaintenance(!diningTable.isMaintenance());
+        return diningTableRepository.save(diningTable);
+    }
+
+    public AirhockeyTable changeMaintenanceStateAirHockey(int id) {
+        AirhockeyTable airhockeyTable = airhockeyTableRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No airhockey table with id " + id + " found"));
+        airhockeyTable.setMaintenance(!airhockeyTable.isMaintenance());
+        return airhockeyTableRepository.save(airhockeyTable);
+    }
+
+    public BowlingLane changeMaintenanceStateBowling(int id) {
+        BowlingLane bowlingLane = bowlingLaneRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No bowling lane with id " + id + " found"));
+        bowlingLane.setMaintenance(!bowlingLane.isMaintenance());
+        return bowlingLaneRepository.save(bowlingLane);
     }
 }
