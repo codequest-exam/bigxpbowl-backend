@@ -1,8 +1,6 @@
 package kea.exam.xpbowlingbackend.equipment;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
@@ -16,4 +14,10 @@ public class EquipmentController {
     public List<Equipment> getAllEquipment() {
         return equipmentService.getAllEquipment();
     }
+    @PutMapping("/{id}")
+    public Equipment updateEquipment(@PathVariable int id, @RequestBody Equipment equipment) {
+        return equipmentService.updateEquipment(id, equipment);
+    }
+
+
 }
