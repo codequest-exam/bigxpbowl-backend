@@ -12,7 +12,6 @@ public class ProductController {
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
-
     @GetMapping
     public List<Product> getProducts() {
         return productService.getProducts();
@@ -22,7 +21,10 @@ public class ProductController {
     public Product getProduct(@PathVariable int id) {
         return productService.getProduct(id);
     }
-
+@PostMapping
+    public Product createProduct(@RequestBody Product product) {
+        return productService.createProduct(product);
+    }
     @PutMapping("/{id}")
     public Product updateProduct(@PathVariable int id, @RequestBody Product product) {
         return productService.updateProduct(id, product);

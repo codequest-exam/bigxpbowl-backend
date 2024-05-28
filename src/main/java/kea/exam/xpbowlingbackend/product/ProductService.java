@@ -22,6 +22,9 @@ public class ProductService {
     public Product getProduct(int id) {
         return productRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
     }
+    public Product createProduct(Product product) {
+        return productRepository.save(product);
+    }
 
     public Product updateProduct(int id, Product product) {
         if (productRepository.existsById(id)) {
