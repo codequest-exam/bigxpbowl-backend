@@ -1,11 +1,9 @@
 package kea.exam.xpbowlingbackend.activity;
 
+import kea.exam.xpbowlingbackend.activity.dtos.AvailableRequestDTO;
 import kea.exam.xpbowlingbackend.activity.entities.Activity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -42,5 +40,10 @@ public class ActivityController {
     @GetMapping("/month/{date}")
     public List<Activity> getActivitiesOneMonthAhead(@PathVariable LocalDate date) {
         return activityService.getActivitiesByMonth(date);
+    }
+
+    @PostMapping("/available")
+    public int getAvailableTablesAndLanes(@RequestBody AvailableRequestDTO availableRequestDTO) {
+        return activityService.getAvailableAtTime(availableRequestDTO);
     }
 }

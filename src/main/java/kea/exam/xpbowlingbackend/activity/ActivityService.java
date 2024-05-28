@@ -1,6 +1,8 @@
 package kea.exam.xpbowlingbackend.activity;
 
+import kea.exam.xpbowlingbackend.activity.dtos.AvailableRequestDTO;
 import kea.exam.xpbowlingbackend.activity.entities.Activity;
+import kea.exam.xpbowlingbackend.activity.entities.ActivityType;
 import kea.exam.xpbowlingbackend.activity.repositories.ActivityRepository;
 import org.springframework.stereotype.Service;
 
@@ -220,5 +222,38 @@ public class ActivityService {
 
     public void deleteActivity(int id) {
         activityRepository.deleteById(id);
+    }
+
+    public int getAvailableAtTime(AvailableRequestDTO req) {
+        List<Activity> found = activityRepository.findAllByDateAndActivityType(req.date(), req.activityType());
+        System.out.println(found);
+        System.out.println("size of found: " + found.size());
+        int count = 0;
+        for (Activity activity : found) {
+            if (activityOverlapsSecond(req, activity)) {
+                count++;
+            }
+        }
+        if (req.activityType().equals(ActivityType.BOWLING)) {
+            System.out.println("bowling");
+            count =20-count;
+        }
+        if (req.activityType().equals(ActivityType.DINING)) {
+            System.out.println("dining");
+            count=20-count;
+        }
+        if (req.activityType().equals(ActivityType.AIRHOCKEY)) {
+            count+=6-count;
+        }
+        if (req.activityType().equals(ActivityType.CHILDBOWLING)) {
+            count+=4-count;
+        }
+
+        System.out.println("returning count: " + count);
+        return count;
+    }
+
+    public boolean activityOverlapsSecond(AvailableRequestDTO activityToCheck, Activity activity) {
+        return (activity.getEndTime().isAfter(activityToCheck.startTime()) && activity.getStartTime().compareTo(activityToCheck.startTime()) <= 0);
     }
 }
