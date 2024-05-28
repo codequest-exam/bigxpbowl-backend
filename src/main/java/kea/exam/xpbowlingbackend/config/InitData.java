@@ -123,26 +123,26 @@ public class InitData implements CommandLineRunner {
     }
 
     private void initProducts() {
-        products.add(new Product("Carlsberg classic", 25));
-        products.add(new Product("Coca cola", 20));
-        products.add(new Product("Fanta", 20));
-        products.add(new Product("Sprite", 20));
-        products.add(new Product("Faxe kondi", 20));
-        products.add(new Product("Faxe kondi free", 20));
-        products.add(new Product("Faxe kondi booster", 20));
-        products.add(new Product("Faxe kondi power", 20));
-        products.add(new Product("Faxe kondi max", 20));
-        products.add(new Product("Faxe kondi ultra", 20));
-        products.add(new Product("Faxe kondi extreme", 20));
-        products.add(new Product("Faxe kondi light", 20));
-        products.add(new Product("Faxe kondi zero", 20));
-        products.add(new Product("Faxe kondi sugar free", 20));
-        products.add(new Product("Faxe kondi sugar", 20));
-        products.add(new Product("Local red win", 59));
-        products.add(new Product("Local white wine", 59));
-        products.add(new Product("Local rose wine", 59));
-        products.add(new Product("Martini", 79));
-        products.add(new Product("Mojito", 79));
+        products.add(new Product("Carlsberg classic", 25, "https://img.goodfon.com/original/4123x2738/0/27/carlsberg-beer-pivo-brend.jpg"));
+        products.add(new Product("Coca cola", 20, "https://upload.wikimedia.org/wikipedia/commons/c/cc/Coca-Cola_Local_Brand_Cambodia.jpg"));
+        products.add(new Product("Fanta", 20, "https://upload.wikimedia.org/wikipedia/commons/3/3e/Fanta_logo_%282009%29.jpg"));
+        products.add(new Product("Sprite", 20, "https://live.staticflickr.com/3775/13174976693_cd23d2fe3d_b.jpg"));
+        products.add(new Product("Faxe kondi", 20, "https://upload.wikimedia.org/wikipedia/commons/4/4b/Faxe_Kondi_%28d%C3%A5se%29.jpeg"));
+        products.add(new Product("Faxe kondi free", 20, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPTvYi5LwcIwYlRPqPfWNxZ-GfnizLvAt7iw&s"));
+        products.add(new Product("Faxe kondi booster", 20, "https://upload.wikimedia.org/wikipedia/commons/9/9a/Pictures_Not_Yet_Available.svg"));
+        products.add(new Product("Faxe kondi power", 20, "https://upload.wikimedia.org/wikipedia/commons/9/9a/Pictures_Not_Yet_Available.svg"));
+        products.add(new Product("Faxe kondi max", 20, "https://upload.wikimedia.org/wikipedia/commons/9/9a/Pictures_Not_Yet_Available.svg"));
+        products.add(new Product("Faxe kondi ultra", 20, "https://upload.wikimedia.org/wikipedia/commons/9/9a/Pictures_Not_Yet_Available.svg"));
+        products.add(new Product("Faxe kondi extreme", 20, "https://upload.wikimedia.org/wikipedia/commons/9/9a/Pictures_Not_Yet_Available.svg"));
+        products.add(new Product("Faxe kondi light", 20, "https://upload.wikimedia.org/wikipedia/commons/9/9a/Pictures_Not_Yet_Available.svg"));
+        products.add(new Product("Faxe kondi zero", 20, "https://upload.wikimedia.org/wikipedia/commons/9/9a/Pictures_Not_Yet_Available.svg"));
+        products.add(new Product("Faxe kondi sugar free", 20, "https://upload.wikimedia.org/wikipedia/commons/9/9a/Pictures_Not_Yet_Available.svg"));
+        products.add(new Product("Faxe kondi sugar", 20, "https://upload.wikimedia.org/wikipedia/commons/9/9a/Pictures_Not_Yet_Available.svg"));
+        products.add(new Product("Local red wine", 59, "https://live.staticflickr.com/4392/35968783350_547823ebf1_b.jpg"));
+        products.add(new Product("Local white wine", 59, "https://upload.wikimedia.org/wikipedia/commons/8/8d/Glass_of_White_Wine_shot_with_a_bottle_of_white_wine_-_Evan_Swigart.jpg"));
+        products.add(new Product("Local rose wine", 59, "https://i1.pickpik.com/photos/910/688/955/rose-table-holidays-tableware-preview.jpg"));
+        products.add(new Product("Martini", 79, "https://live.staticflickr.com/4084/5076909064_883d31b1f3_b.jpg"));
+        products.add(new Product("Mojito", 79, "https://live.staticflickr.com/4147/5084101811_9f84644414_b.jpg"));
 
         productRepository.saveAll(products);
     }
