@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -22,6 +23,7 @@ public class Shift {
     @Enumerated(EnumType.STRING)
     private DayOfWeek dayOfWeek;
     @ManyToMany
+
     private List<Staff> staff;
 
     public Shift(LocalTime shiftStart, LocalTime shiftEnd, DayOfWeek dayOfWeek, List<Staff> staff) {
