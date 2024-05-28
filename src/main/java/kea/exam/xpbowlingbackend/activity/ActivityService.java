@@ -4,8 +4,11 @@ import kea.exam.xpbowlingbackend.activity.dtos.AvailableRequestDTO;
 import kea.exam.xpbowlingbackend.activity.entities.Activity;
 import kea.exam.xpbowlingbackend.activity.entities.ActivityType;
 import kea.exam.xpbowlingbackend.activity.repositories.ActivityRepository;
+import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservation;
+import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservationRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -13,11 +16,14 @@ import java.util.Optional;
 @Service
 public class ActivityService {
     ActivityRepository activityRepository;
+    RecurringBowlingReservationRepository recurringBowlingReservationRepository;
 
 
-    public ActivityService(ActivityRepository activityRepository) {
+    public ActivityService(ActivityRepository activityRepository, RecurringBowlingReservationRepository recurringBowlingReservationRepository) {
         this.activityRepository = activityRepository;
+        this.recurringBowlingReservationRepository = recurringBowlingReservationRepository;
     }
+
 
 
     public List<Activity> getAllActivities() {
@@ -234,7 +240,19 @@ public class ActivityService {
                 count++;
             }
         }
+
+
+
         if (req.activityType().equals(ActivityType.BOWLING)) {
+            DayOfWeek dayOfWeek = req.date().getDayOfWeek();
+            List<RecurringBowlingReservation> recurringBowlingReservations = recurringBowlingReservationRepository.findAllByDayOfWeek(dayOfWeek);
+            System.out.println("recurringBowlingReservations: " + recurringBowlingReservations.size());
+            for (RecurringBowlingReservation recurringBowlingReservation : recurringBowlingReservations) {
+                if (activityOverlapsSecond(req, recurringBowlingReservation)) {
+                    System.out.println("overlapping recurring reservation");
+                    count++;
+                }
+            }
             System.out.println("bowling");
             count =20-count;
         }
@@ -255,5 +273,9 @@ public class ActivityService {
 
     public boolean activityOverlapsSecond(AvailableRequestDTO activityToCheck, Activity activity) {
         return (activity.getEndTime().isAfter(activityToCheck.startTime()) && activity.getStartTime().compareTo(activityToCheck.startTime()) <= 0);
+    }
+
+    public boolean activityOverlapsSecond(AvailableRequestDTO activityToCheck, RecurringBowlingReservation recurring) {
+        return (recurring.getEndTime().isAfter(activityToCheck.startTime()) && recurring.getStartTime().compareTo(activityToCheck.startTime()) <= 0);
     }
 }

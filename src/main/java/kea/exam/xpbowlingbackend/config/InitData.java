@@ -12,6 +12,7 @@ import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservati
 import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservationRepository;
 import kea.exam.xpbowlingbackend.reservation.Reservation;
 import kea.exam.xpbowlingbackend.reservation.ReservationRepository;
+import kea.exam.xpbowlingbackend.staff.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -36,13 +37,16 @@ public class InitData implements CommandLineRunner {
     private final DiningTableRepository diningTableRepository;
     private final ProductRepository productRepository;
 
+    private final StaffRepository staffRepository;
+    private final ShiftRepository shiftRepository;
 
     private final List<BowlingLane> bowlingLanes = new ArrayList<>();
     private final List<AirhockeyTable> airhockeyTables = new ArrayList<>();
     private final List<DiningTable> diningTables = new ArrayList<>();
     private final List<Product> products = new ArrayList<>();
+    private final List<Staff> staff = new ArrayList<>();
 
-    public InitData(ProductRepository productRepository ,CompetitionDayRepository competitionDayRepository, RecurringBowlingReservationRepository recurringBowlingReservationRepository, ReservationRepository reservationRepository, BowlingLaneRepository bowlingLaneRepository, AirhockeyTableRepository airhockeyTableRepository, ActivityRepository activityRepository, DiningTableRepository diningTableRepository, EquipmentRepository equipmentRepository) {
+    public InitData(ShiftRepository shiftRepository, StaffRepository staffRepository,ProductRepository productRepository ,CompetitionDayRepository competitionDayRepository, RecurringBowlingReservationRepository recurringBowlingReservationRepository, ReservationRepository reservationRepository, BowlingLaneRepository bowlingLaneRepository, AirhockeyTableRepository airhockeyTableRepository, ActivityRepository activityRepository, DiningTableRepository diningTableRepository, EquipmentRepository equipmentRepository) {
         this.reservationRepository = reservationRepository;
         this.activityRepository = activityRepository;
         this.recurringBowlingReservationRepository = recurringBowlingReservationRepository;
@@ -52,6 +56,8 @@ public class InitData implements CommandLineRunner {
         this.airhockeyTableRepository = airhockeyTableRepository;
         this.diningTableRepository = diningTableRepository;
         this.productRepository = productRepository;
+        this.staffRepository = staffRepository;
+        this.shiftRepository = shiftRepository;
     }
 
     @Override
@@ -66,6 +72,54 @@ public class InitData implements CommandLineRunner {
         initAirhockeyTables();
         initDiningTables();
         initProducts();
+        initStaff();
+        initShifts();
+    }
+
+    private void initStaff() {
+        staff.add(new Staff("Laurits", StaffRoles.MANAGER));
+        staff.add(new Staff("Henriette", StaffRoles.MANAGER));
+
+        staff.add(new Staff("Mikkel", StaffRoles.EMPLOYEE));
+        staff.add(new Staff("Victor", StaffRoles.EMPLOYEE));
+        staff.add(new Staff("Liselotte", StaffRoles.EMPLOYEE));
+        staff.add(new Staff("Emma", StaffRoles.EMPLOYEE));
+        staff.add(new Staff("Sigrid", StaffRoles.EMPLOYEE));
+        staff.add(new Staff("Marcus", StaffRoles.EMPLOYEE));
+        staff.add(new Staff("Joakim", StaffRoles.EMPLOYEE));
+
+        staff.add(new Staff("Louise", StaffRoles.OPERATOR));
+        staff.add(new Staff("Mads", StaffRoles.OPERATOR));
+
+        staffRepository.saveAll(staff);
+    }
+
+    private void initShifts() {
+
+        List<Shift> shifts = new ArrayList<>();
+
+            shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.MONDAY, List.of(staff.get(1), staff.get(3), staff.get(4))));
+            shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.MONDAY, List.of(staff.get(0), staff.get(5), staff.get(6), staff.get(staff.size()-2))));
+
+            shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.TUESDAY, List.of( staff.get(3), staff.get(4), staff.get(staff.size()-1))));
+            shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.TUESDAY, List.of(staff.get(0), staff.get(1), staff.get(2), staff.get(5))));
+
+            shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.WEDNESDAY, List.of(staff.get(1), staff.get(7), staff.get(4))));
+            shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.WEDNESDAY, List.of(staff.get(0), staff.get(5), staff.get(6), staff.get(8))));
+
+            shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.THURSDAY, List.of(staff.get(3), staff.get(4), staff.get(9))));
+            shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.THURSDAY, List.of(staff.get(0), staff.get(1), staff.get(2), staff.get(5))));
+
+            shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.FRIDAY, List.of(staff.get(1), staff.get(3), staff.get(4))));
+            shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.FRIDAY, List.of(staff.get(0), staff.get(5), staff.get(6), staff.get(8))));
+
+            shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.SATURDAY, List.of(staff.get(3), staff.get(4), staff.get(9))));
+            shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.SATURDAY, List.of(staff.get(0), staff.get(1), staff.get(2), staff.get(5))));
+
+            shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.SUNDAY, List.of(staff.get(1), staff.get(3), staff.get(4))));
+            shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.SUNDAY, List.of(staff.get(0), staff.get(5), staff.get(6), staff.get(8))));
+
+        shiftRepository.saveAll(shifts);
     }
 
     private void initProducts() {

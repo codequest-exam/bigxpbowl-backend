@@ -1,8 +1,6 @@
 package kea.exam.xpbowlingbackend.staff;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,9 +14,10 @@ public class Staff {
     @GeneratedValue
     private int id;
     private String name;
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private StaffRoles role;
 
-    public Staff(String name, String role) {
+    public Staff(String name, StaffRoles role) {
         this.name = name;
         this.role = role;
     }
