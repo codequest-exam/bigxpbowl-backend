@@ -2,8 +2,8 @@ package kea.exam.xpbowlingbackend.config;
 
 import kea.exam.xpbowlingbackend.activity.entities.*;
 import kea.exam.xpbowlingbackend.activity.repositories.*;
-import kea.exam.xpbowlingbackend.equipment.Equipment;
-import kea.exam.xpbowlingbackend.equipment.EquipmentRepository;
+import kea.exam.xpbowlingbackend.operations.Equipment;
+import kea.exam.xpbowlingbackend.operations.EquipmentRepository;
 import kea.exam.xpbowlingbackend.product.Product;
 import kea.exam.xpbowlingbackend.product.ProductRepository;
 import kea.exam.xpbowlingbackend.reservation.competition.CompetitionDay;
