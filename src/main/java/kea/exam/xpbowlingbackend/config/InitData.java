@@ -4,6 +4,8 @@ import kea.exam.xpbowlingbackend.activity.entities.*;
 import kea.exam.xpbowlingbackend.activity.repositories.*;
 import kea.exam.xpbowlingbackend.equipment.Equipment;
 import kea.exam.xpbowlingbackend.equipment.EquipmentRepository;
+import kea.exam.xpbowlingbackend.product.Product;
+import kea.exam.xpbowlingbackend.product.ProductRepository;
 import kea.exam.xpbowlingbackend.reservation.competition.CompetitionDay;
 import kea.exam.xpbowlingbackend.reservation.competition.CompetitionDayRepository;
 import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservation;
@@ -29,12 +31,27 @@ public class InitData implements CommandLineRunner {
     private final CompetitionDayRepository competitionDayRepository;
     private final EquipmentRepository equipmentRepository;
 
-    public InitData(CompetitionDayRepository competitionDayRepository, RecurringBowlingReservationRepository recurringBowlingReservationRepository, ReservationRepository reservationRepository, BowlingLaneRepository bowlingLaneRepository, AirhockeyTableRepository airhockeyTableRepository, ActivityRepository activityRepository, DiningTableRepository diningTableRepository, EquipmentRepository equipmentRepository) {
+    private final BowlingLaneRepository bowlingLaneRepository;
+    private final AirhockeyTableRepository airhockeyTableRepository;
+    private final DiningTableRepository diningTableRepository;
+    private final ProductRepository productRepository;
+
+
+    private final List<BowlingLane> bowlingLanes = new ArrayList<>();
+    private final List<AirhockeyTable> airhockeyTables = new ArrayList<>();
+    private final List<DiningTable> diningTables = new ArrayList<>();
+    private final List<Product> products = new ArrayList<>();
+
+    public InitData(ProductRepository productRepository ,CompetitionDayRepository competitionDayRepository, RecurringBowlingReservationRepository recurringBowlingReservationRepository, ReservationRepository reservationRepository, BowlingLaneRepository bowlingLaneRepository, AirhockeyTableRepository airhockeyTableRepository, ActivityRepository activityRepository, DiningTableRepository diningTableRepository, EquipmentRepository equipmentRepository) {
         this.reservationRepository = reservationRepository;
         this.activityRepository = activityRepository;
         this.recurringBowlingReservationRepository = recurringBowlingReservationRepository;
         this.competitionDayRepository = competitionDayRepository;
         this.equipmentRepository = equipmentRepository;
+        this.bowlingLaneRepository = bowlingLaneRepository;
+        this.airhockeyTableRepository = airhockeyTableRepository;
+        this.diningTableRepository = diningTableRepository;
+        this.productRepository = productRepository;
     }
 
     @Override
@@ -45,6 +62,35 @@ public class InitData implements CommandLineRunner {
        initActivities();
         initReservations();
         initEquipment();
+        initBowlingLanes();
+        initAirhockeyTables();
+        initDiningTables();
+        initProducts();
+    }
+
+    private void initProducts() {
+        products.add(new Product("Carlsberg classic", 25));
+        products.add(new Product("Coca cola", 20));
+        products.add(new Product("Fanta", 20));
+        products.add(new Product("Sprite", 20));
+        products.add(new Product("Faxe kondi", 20));
+        products.add(new Product("Faxe kondi free", 20));
+        products.add(new Product("Faxe kondi booster", 20));
+        products.add(new Product("Faxe kondi power", 20));
+        products.add(new Product("Faxe kondi max", 20));
+        products.add(new Product("Faxe kondi ultra", 20));
+        products.add(new Product("Faxe kondi extreme", 20));
+        products.add(new Product("Faxe kondi light", 20));
+        products.add(new Product("Faxe kondi zero", 20));
+        products.add(new Product("Faxe kondi sugar free", 20));
+        products.add(new Product("Faxe kondi sugar", 20));
+        products.add(new Product("Local red win", 59));
+        products.add(new Product("Local white wine", 59));
+        products.add(new Product("Local rose wine", 59));
+        products.add(new Product("Martini", 79));
+        products.add(new Product("Mojito", 79));
+
+        productRepository.saveAll(products);
     }
 
     private void initCompetitionDays() {
@@ -121,6 +167,30 @@ public class InitData implements CommandLineRunner {
 
         List<Reservation> reservations = Arrays.asList(reservation1, reservation2, reservation3);
         reservationRepository.saveAll(reservations);
+    }
+
+    private void initBowlingLanes() {
+        List<BowlingLane> tempLanes = new ArrayList<>();
+        for (int i = 0; i < 24; i++) {
+            tempLanes.add(new BowlingLane(false, i > 19, i + 1));
+        }
+        bowlingLanes.addAll(bowlingLaneRepository.saveAll(tempLanes));
+    }
+
+    private void initAirhockeyTables() {
+        List<AirhockeyTable> tempTables = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            tempTables.add(new AirhockeyTable(false, i + 1));
+        }
+        airhockeyTables.addAll(airhockeyTableRepository.saveAll(tempTables));
+    }
+
+    private void initDiningTables() {
+        List<DiningTable> tempTables = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            tempTables.add(new DiningTable(false, i + 1));
+        }
+        diningTables.addAll(diningTableRepository.saveAll(tempTables));
     }
 }
 
