@@ -180,7 +180,7 @@ public class ActivityService {
 
     private List<AvailableResponseDTO> getListOfTimes(List<Activity> incomingActivities, List<RecurringBowlingReservation> recurringBowlingReservations, boolean full, int capacity) {
         List<AvailableResponseDTO> availableResponseDTOList = new ArrayList<>();
-        for (int i = 10; i < 24; i++) {
+        for (int i = 10; i < 23; i++) {
             LocalTime t = LocalTime.of(i, 0);
             if (full) {
                 availableResponseDTOList.add(new AvailableResponseDTO(t, 0));
