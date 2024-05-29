@@ -145,10 +145,10 @@ public class ActivityService {
         int diningCapacity = diningTableRepository.countByMaintenance(false);
         int airHockeyCapacity = airhockeyTableRepository.countByMaintenance(false);
 
-        System.out.println("bowlingCapacity: " + bowlingCapacity);
-        System.out.println("childBowlingCapacity: " + childBowlingCapacity);
-        System.out.println("diningCapacity: " + diningCapacity);
-        System.out.println("airHockeyCapacity: " + airHockeyCapacity);
+//        System.out.println("bowlingCapacity: " + bowlingCapacity);
+//        System.out.println("childBowlingCapacity: " + childBowlingCapacity);
+//        System.out.println("diningCapacity: " + diningCapacity);
+//        System.out.println("airHockeyCapacity: " + airHockeyCapacity);
 
         List<AvailableResponseDTO> bowlingResponse = getListOfTimes(competitionCheck, bowling, recurringBowlingReservations, bowlingCapacity);
         List<AvailableResponseDTO> diningResponse = getListOfTimes(dining, diningCapacity);
@@ -171,7 +171,7 @@ public class ActivityService {
 
     public List<AvailableResponseDTO> getListOfTimes(boolean competitionCheck, List<Activity> bowlingLanes, List<RecurringBowlingReservation> recurringBowlingLanes, int capacity ) {
 
-        System.out.println("competitionCheck: " + competitionCheck);
+        //System.out.println("competitionCheck: " + competitionCheck);
         if (competitionCheck) {
             return getListOfTimes(null,null, true, capacity);
         }
@@ -224,7 +224,7 @@ public class ActivityService {
 
     public boolean activityOverlapsSecond(AvailableRequestDTO activityToCheck, Activity activity) {
         boolean check = (activity.getEndTime().isAfter(activityToCheck.startTime()) && activity.getStartTime().isBefore(activityToCheck.endTime()));
-        System.out.println("check: " + check);
+        //System.out.println("check: " + check);
         return check;
         //return (activity.getEndTime().isAfter(activityToCheck.startTime()) && activity.getStartTime().compareTo(activityToCheck.endTime()) <= 0);
     }

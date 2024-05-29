@@ -21,9 +21,14 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<ReservationResponseDTO> getAllReservations(){
         return reservationService.getAllReservations();
+    }
+
+    @GetMapping("/all/{page}")
+    public List<ReservationResponseDTO> getAllReservations(@PathVariable int page){
+        return reservationService.getAllReservations(page);
     }
     @GetMapping("/recurring")
     public List<RecurringBowlingReservation> getAllRecurringReservations(){
