@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface BowlingLaneRepository extends JpaRepository<BowlingLane, Integer> {
     List<BowlingLane> findByLaneNumber(int i);
+
+    int countByMaintenanceAndChildFriendly(boolean maintenance, boolean childFriendly);
 }

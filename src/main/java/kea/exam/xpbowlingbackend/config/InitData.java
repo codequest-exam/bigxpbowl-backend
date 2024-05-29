@@ -226,7 +226,7 @@ public class InitData implements CommandLineRunner {
     private void initBowlingLanes() {
         List<BowlingLane> tempLanes = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
-            tempLanes.add(new BowlingLane(false, i > 19, i + 1));
+            tempLanes.add(new BowlingLane(false, i > 19, i + 1, i > 19 ? ActivityType.CHILDBOWLING : ActivityType.BOWLING));
         }
         bowlingLanes.addAll(bowlingLaneRepository.saveAll(tempLanes));
     }
