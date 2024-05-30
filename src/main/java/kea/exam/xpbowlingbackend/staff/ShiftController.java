@@ -23,8 +23,18 @@ public class ShiftController {
         return shiftService.getShift(id);
     }
 
-    @PostMapping("/{id}/staff/{staffId}")
-    public Shift changeStaff(@PathVariable int id, @PathVariable int staffId) {
-        return shiftService.changeStaff(id, staffId);
+    @GetMapping("/staff")
+    public List<Staff> getStaff() {
+        return shiftService.getStaff();
+    }
+
+    @GetMapping("/{id}/staff/{newStaffId}/{previousStaffId}")
+    public Shift changeStaff(@PathVariable int id, @PathVariable int newStaffId, @PathVariable int previousStaffId) {
+        return shiftService.changeStaff(id, newStaffId, previousStaffId);
+    }
+
+    @PutMapping("/{id}")
+    public Shift updateShift(@PathVariable int id, @RequestBody Shift shift) {
+        return shiftService.updateShift(id, shift);
     }
 }

@@ -23,7 +23,7 @@ public class ActivityControllerIntegrationTest {
 
     @Test
     public void getAllActivitiesReturnsAllActivities() {
-        ResponseEntity<Activity[]> response = restTemplate.getForEntity("/activity", Activity[].class);
+        ResponseEntity<Activity[]> response = restTemplate.getForEntity("/activities", Activity[].class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
@@ -31,7 +31,7 @@ public class ActivityControllerIntegrationTest {
 
     @Test
     public void getActivityByIdReturnsActivity() {
-        ResponseEntity<Activity> response = restTemplate.getForEntity("/activity/1", Activity.class);
+        ResponseEntity<Activity> response = restTemplate.getForEntity("/activities/1", Activity.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
