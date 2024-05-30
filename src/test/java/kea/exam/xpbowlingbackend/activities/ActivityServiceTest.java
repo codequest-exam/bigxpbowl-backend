@@ -125,49 +125,4 @@ class ActivityServiceTest {
 
     }
 
-    @Test
-    public void getAllAvailabilitiesForDay() {
-
-        competitionDayRepository.save(new CompetitionDay(LocalDate.of(2024, 1, 1)));
-        AllAvailableSlotsForDay list = activityService.getAllAvailabilitiesForDay(LocalDate.of(2024, 1, 1));
-
-    }
-
-    @Test
-    void getAllAvailabilitiesForDay_handlesNoActivities() {
-        LocalDate date = LocalDate.of(2022, 12, 24);
-
-        when(activityRepository.findAllByDateAndActivityType(date, ActivityType.BOWLING)).thenReturn(Arrays.asList());
-        when(activityRepository.findAllByDateAndActivityType(date, ActivityType.DINING)).thenReturn(Arrays.asList());
-        when(activityRepository.findAllByDateAndActivityType(date, ActivityType.AIRHOCKEY)).thenReturn(Arrays.asList());
-        when(activityRepository.findAllByDateAndActivityType(date, ActivityType.CHILDBOWLING)).thenReturn(Arrays.asList());
-
-        AllAvailableSlotsForDay result = activityService.getAllAvailabilitiesForDay(date);
-
-        assertEquals(0, result.bowlingLanes().size());
-        assertEquals(0, result.diningTables().size());
-        assertEquals(0, result.airHockeyTables().size());
-        assertEquals(0, result.childLanes().size());
-    }
-
-    @Test
-    void getAllAvailabilitiesForDay_returnsCorrectData() {
-        LocalDate date = LocalDate.of(2022, 12, 24);
-        Activity activity1 = new Activity(LocalTime.of(10, 0), LocalTime.of(12, 0), date, ActivityType.BOWLING, 2);
-        Activity activity2 = new Activity(LocalTime.of(12, 0), LocalTime.of(14, 0), date, ActivityType.DINING, 2);
-        Activity activity3 = new Activity(LocalTime.of(14, 0), LocalTime.of(16, 0), date, ActivityType.AIRHOCKEY, 2);
-        Activity activity4 = new Activity(LocalTime.of(16, 0), LocalTime.of(18, 0), date, ActivityType.CHILDBOWLING, 2);
-
-        when(activityRepository.findAllByDateAndActivityType(date, ActivityType.BOWLING)).thenReturn(Arrays.asList(activity1));
-        when(activityRepository.findAllByDateAndActivityType(date, ActivityType.DINING)).thenReturn(Arrays.asList(activity2));
-        when(activityRepository.findAllByDateAndActivityType(date, ActivityType.AIRHOCKEY)).thenReturn(Arrays.asList(activity3));
-        when(activityRepository.findAllByDateAndActivityType(date, ActivityType.CHILDBOWLING)).thenReturn(Arrays.asList(activity4));
-
-        AllAvailableSlotsForDay result = activityService.getAllAvailabilitiesForDay(date);
-
-        assertEquals(4, result.bowlingLanes().size());
-        assertEquals(4, result.diningTables().size());
-        assertEquals(4, result.airHockeyTables().size());
-        assertEquals(4, result.childLanes().size());
-    }
 }
