@@ -1,5 +1,6 @@
 package kea.exam.xpbowlingbackend.activity;
 
+import kea.exam.xpbowlingbackend.activity.dtos.AllAvailableSlotsForDay;
 import kea.exam.xpbowlingbackend.activity.dtos.AvailableRequestDTO;
 import kea.exam.xpbowlingbackend.activity.entities.Activity;
 import org.springframework.http.ResponseEntity;
@@ -46,4 +47,12 @@ public class ActivityController {
     public int getAvailableTablesAndLanes(@RequestBody AvailableRequestDTO availableRequestDTO) {
         return activityService.getAvailableAtTime(availableRequestDTO);
     }
+    @GetMapping("/available/{date}")
+    public AllAvailableSlotsForDay getAvailableTablesAndLanes(@PathVariable LocalDate date) {
+        System.out.println("date: " + date);
+        return activityService.getAllAvailabilitiesForDay(date);
+    }
+
+
+
 }

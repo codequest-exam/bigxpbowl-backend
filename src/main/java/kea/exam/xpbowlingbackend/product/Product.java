@@ -17,9 +17,11 @@ public class Product {
     private int id;
     private String name;
     private double price;
+    private String imgURL;
 
-    public Product(String name, double price) {
+    public Product(String name, double price, String imgURL) {
         this.name = name;
         this.price = price;
+        this.imgURL = imgURL;
     }
 }

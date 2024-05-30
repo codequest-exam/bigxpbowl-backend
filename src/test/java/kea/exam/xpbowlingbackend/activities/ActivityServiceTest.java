@@ -1,8 +1,14 @@
 package kea.exam.xpbowlingbackend.activities;
 
 import kea.exam.xpbowlingbackend.activity.ActivityService;
+import kea.exam.xpbowlingbackend.activity.dtos.AllAvailableSlotsForDay;
+import kea.exam.xpbowlingbackend.activity.dtos.AvailableRequestDTO;
 import kea.exam.xpbowlingbackend.activity.entities.Activity;
+import kea.exam.xpbowlingbackend.activity.entities.ActivityType;
 import kea.exam.xpbowlingbackend.activity.repositories.ActivityRepository;
+import kea.exam.xpbowlingbackend.reservation.competition.CompetitionDay;
+import kea.exam.xpbowlingbackend.reservation.competition.CompetitionDayRepository;
+import kea.exam.xpbowlingbackend.reservation.recurring.RecurringBowlingReservationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -10,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +28,12 @@ class ActivityServiceTest {
 
     @Mock
     ActivityRepository activityRepository;
+
+    @Mock
+    RecurringBowlingReservationRepository recurringBowlingReservationRepository;
+
+    @Mock
+    CompetitionDayRepository competitionDayRepository;
 
     @InjectMocks
     ActivityService activityService;
@@ -98,4 +111,18 @@ class ActivityServiceTest {
         assertEquals(2, result.size());
         verify(activityRepository, times(1)).findAllByDateBetween(any(LocalDate.class), any(LocalDate.class));
     }
+
+    @Test
+    void getAvailableAtTime(){
+        Activity activity1 = new Activity(LocalTime.of(11, 0), LocalTime.of(12, 0), LocalDate.of(2024, 2,3), ActivityType.AIRHOCKEY, 2);
+
+        Activity activity2 = new Activity(LocalTime.of(11, 0), LocalTime.of(12, 0), LocalDate.of(2024, 2,3), ActivityType.AIRHOCKEY, 2);
+        when(activityRepository.findAllByDateAndActivityType(any(LocalDate.class), any())).thenReturn(Arrays.asList(activity1, activity2));
+
+        int result = activityService.getAvailableAtTime(new AvailableRequestDTO(LocalDate.of(2024, 2,3), LocalTime.of(10, 0), LocalTime.of(12, 0), ActivityType.AIRHOCKEY));
+
+        assertEquals(2, result);
+
+    }
+
 }
