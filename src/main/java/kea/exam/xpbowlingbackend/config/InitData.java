@@ -130,14 +130,6 @@ public class InitData implements CommandLineRunner {
         products.add(new Product("Faxe kondi", 20, "https://upload.wikimedia.org/wikipedia/commons/4/4b/Faxe_Kondi_%28d%C3%A5se%29.jpeg"));
         products.add(new Product("Faxe kondi free", 20, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPTvYi5LwcIwYlRPqPfWNxZ-GfnizLvAt7iw&s"));
         products.add(new Product("Faxe kondi booster", 20, "https://upload.wikimedia.org/wikipedia/commons/9/9a/Pictures_Not_Yet_Available.svg"));
-        products.add(new Product("Faxe kondi power", 20, "https://upload.wikimedia.org/wikipedia/commons/9/9a/Pictures_Not_Yet_Available.svg"));
-        products.add(new Product("Faxe kondi max", 20, "https://upload.wikimedia.org/wikipedia/commons/9/9a/Pictures_Not_Yet_Available.svg"));
-        products.add(new Product("Faxe kondi ultra", 20, "https://upload.wikimedia.org/wikipedia/commons/9/9a/Pictures_Not_Yet_Available.svg"));
-        products.add(new Product("Faxe kondi extreme", 20, "https://upload.wikimedia.org/wikipedia/commons/9/9a/Pictures_Not_Yet_Available.svg"));
-        products.add(new Product("Faxe kondi light", 20, "https://upload.wikimedia.org/wikipedia/commons/9/9a/Pictures_Not_Yet_Available.svg"));
-        products.add(new Product("Faxe kondi zero", 20, "https://upload.wikimedia.org/wikipedia/commons/9/9a/Pictures_Not_Yet_Available.svg"));
-        products.add(new Product("Faxe kondi sugar free", 20, "https://upload.wikimedia.org/wikipedia/commons/9/9a/Pictures_Not_Yet_Available.svg"));
-        products.add(new Product("Faxe kondi sugar", 20, "https://upload.wikimedia.org/wikipedia/commons/9/9a/Pictures_Not_Yet_Available.svg"));
         products.add(new Product("Local red wine", 59, "https://live.staticflickr.com/4392/35968783350_547823ebf1_b.jpg"));
         products.add(new Product("Local white wine", 59, "https://upload.wikimedia.org/wikipedia/commons/8/8d/Glass_of_White_Wine_shot_with_a_bottle_of_white_wine_-_Evan_Swigart.jpg"));
         products.add(new Product("Local rose wine", 59, "https://i1.pickpik.com/photos/910/688/955/rose-table-holidays-tableware-preview.jpg"));
