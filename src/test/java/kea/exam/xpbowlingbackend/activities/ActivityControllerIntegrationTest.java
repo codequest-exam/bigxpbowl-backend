@@ -39,7 +39,7 @@ public class ActivityControllerIntegrationTest {
 
     @Test
     public void getActivitiesByDateReturnsActivities() {
-        ResponseEntity<Activity[]> response = restTemplate.getForEntity("/activity/date/{date}", Activity[].class, LocalDate.now());
+        ResponseEntity<Activity[]> response = restTemplate.getForEntity("/activities/date/{date}", Activity[].class, LocalDate.now());
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
@@ -47,7 +47,7 @@ public class ActivityControllerIntegrationTest {
 
     @Test
     public void getActivitiesOneWeekAheadReturnsActivities() {
-        ResponseEntity<Activity[]> response = restTemplate.getForEntity("/activity/week/{date}", Activity[].class, LocalDate.now());
+        ResponseEntity<Activity[]> response = restTemplate.getForEntity("/activities/week/{date}", Activity[].class, LocalDate.now());
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
@@ -55,7 +55,7 @@ public class ActivityControllerIntegrationTest {
 
     @Test
     public void getActivitiesOneMonthAheadReturnsActivities() {
-        ResponseEntity<Activity[]> response = restTemplate.getForEntity("/activity/month/{date}", Activity[].class, LocalDate.now());
+        ResponseEntity<Activity[]> response = restTemplate.getForEntity("/activities/month/{date}", Activity[].class, LocalDate.now());
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();

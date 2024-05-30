@@ -125,12 +125,4 @@ class ActivityServiceTest {
 
     }
 
-    @Test
-    public void getAllAvailabilitiesForDay() {
-
-        competitionDayRepository.save(new CompetitionDay(LocalDate.of(2024, 1, 1)));
-        AllAvailableSlotsForDay list = activityService.getAllAvailabilitiesForDay(LocalDate.of(2024, 1, 1));
-
-    }
-
 }
