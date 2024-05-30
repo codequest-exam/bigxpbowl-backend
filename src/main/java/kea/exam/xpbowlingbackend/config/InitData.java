@@ -46,7 +46,12 @@ public class InitData implements CommandLineRunner {
     private final List<Product> products = new ArrayList<>();
     private final List<Staff> staff = new ArrayList<>();
 
-    public InitData(ShiftRepository shiftRepository, StaffRepository staffRepository,ProductRepository productRepository ,CompetitionDayRepository competitionDayRepository, RecurringBowlingReservationRepository recurringBowlingReservationRepository, ReservationRepository reservationRepository, BowlingLaneRepository bowlingLaneRepository, AirhockeyTableRepository airhockeyTableRepository, ActivityRepository activityRepository, DiningTableRepository diningTableRepository, EquipmentRepository equipmentRepository) {
+    private final List<Activity> bowlingActivities = new ArrayList<>();
+    private final List<Activity> childBowlingActivities = new ArrayList<>();
+    private final List<Activity> diningActivities = new ArrayList<>();
+    private final List<Activity> airhockeyActivities = new ArrayList<>();
+
+    public InitData(ShiftRepository shiftRepository, StaffRepository staffRepository, ProductRepository productRepository, CompetitionDayRepository competitionDayRepository, RecurringBowlingReservationRepository recurringBowlingReservationRepository, ReservationRepository reservationRepository, BowlingLaneRepository bowlingLaneRepository, AirhockeyTableRepository airhockeyTableRepository, ActivityRepository activityRepository, DiningTableRepository diningTableRepository, EquipmentRepository equipmentRepository) {
         this.reservationRepository = reservationRepository;
         this.activityRepository = activityRepository;
         this.recurringBowlingReservationRepository = recurringBowlingReservationRepository;
@@ -62,10 +67,12 @@ public class InitData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // TODO: Add init data to all repositories
+//        if (activityRepository.count() > 0) {
+//            return;
+//        }
         initCompetitionDays();
         initRecurringReservations();
-       initActivities();
+        initActivities();
         initReservations();
         initEquipment();
         initBowlingLanes();
@@ -98,26 +105,26 @@ public class InitData implements CommandLineRunner {
 
         List<Shift> shifts = new ArrayList<>();
 
-            shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.MONDAY, List.of(staff.get(1), staff.get(3), staff.get(4))));
-            shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.MONDAY, List.of(staff.get(0), staff.get(5), staff.get(6), staff.get(staff.size()-2))));
+        shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.MONDAY, List.of(staff.get(1), staff.get(3), staff.get(4))));
+        shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.MONDAY, List.of(staff.get(0), staff.get(5), staff.get(6), staff.get(staff.size() - 2))));
 
-            shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.TUESDAY, List.of( staff.get(3), staff.get(4), staff.get(staff.size()-1))));
-            shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.TUESDAY, List.of(staff.get(0), staff.get(1), staff.get(2), staff.get(5))));
+        shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.TUESDAY, List.of(staff.get(3), staff.get(4), staff.get(staff.size() - 1))));
+        shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.TUESDAY, List.of(staff.get(0), staff.get(1), staff.get(2), staff.get(5))));
 
-            shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.WEDNESDAY, List.of(staff.get(1), staff.get(7), staff.get(4))));
-            shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.WEDNESDAY, List.of(staff.get(0), staff.get(5), staff.get(6), staff.get(8))));
+        shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.WEDNESDAY, List.of(staff.get(1), staff.get(7), staff.get(4))));
+        shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.WEDNESDAY, List.of(staff.get(0), staff.get(5), staff.get(6), staff.get(8))));
 
-            shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.THURSDAY, List.of(staff.get(3), staff.get(4), staff.get(9))));
-            shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.THURSDAY, List.of(staff.get(0), staff.get(1), staff.get(2), staff.get(5))));
+        shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.THURSDAY, List.of(staff.get(3), staff.get(4), staff.get(9))));
+        shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.THURSDAY, List.of(staff.get(0), staff.get(1), staff.get(2), staff.get(5))));
 
-            shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.FRIDAY, List.of(staff.get(1), staff.get(3), staff.get(4))));
-            shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.FRIDAY, List.of(staff.get(0), staff.get(5), staff.get(6), staff.get(8))));
+        shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.FRIDAY, List.of(staff.get(1), staff.get(3), staff.get(4))));
+        shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.FRIDAY, List.of(staff.get(0), staff.get(5), staff.get(6), staff.get(8))));
 
-            shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.SATURDAY, List.of(staff.get(3), staff.get(4), staff.get(9))));
-            shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.SATURDAY, List.of(staff.get(0), staff.get(1), staff.get(2), staff.get(5))));
+        shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.SATURDAY, List.of(staff.get(3), staff.get(4), staff.get(9))));
+        shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.SATURDAY, List.of(staff.get(0), staff.get(1), staff.get(2), staff.get(5))));
 
-            shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.SUNDAY, List.of(staff.get(1), staff.get(3), staff.get(4))));
-            shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.SUNDAY, List.of(staff.get(0), staff.get(5), staff.get(6), staff.get(8))));
+        shifts.add(new Shift(LocalTime.of(10, 0), LocalTime.of(17, 0), DayOfWeek.SUNDAY, List.of(staff.get(1), staff.get(3), staff.get(4))));
+        shifts.add(new Shift(LocalTime.of(17, 0), LocalTime.of(23, 0), DayOfWeek.SUNDAY, List.of(staff.get(0), staff.get(5), staff.get(6), staff.get(8))));
 
         shiftRepository.saveAll(shifts);
     }
@@ -148,6 +155,7 @@ public class InitData implements CommandLineRunner {
         }
         competitionDayRepository.saveAll(tempDays);
     }
+
     private void initEquipment() {
         List<Equipment> equipmentList = Arrays.asList(
                 new Equipment("Bowling Shoes (Men)", 50),
@@ -176,49 +184,46 @@ public class InitData implements CommandLineRunner {
         }
         recurringBowlingReservationRepository.saveAll(tempReservations);
     }
+
     public void initActivities() {
-        List<Activity> activities = Arrays.asList(
-                new Activity(LocalTime.of(10, 0), LocalTime.of(11, 0), LocalDate.now(), ActivityType.BOWLING, 1),
-                new Activity(LocalTime.of(11, 0), LocalTime.of(13, 0), LocalDate.now(), ActivityType.DINING, 1),
-                new Activity(LocalTime.of(13, 0), LocalTime.of(15, 0), LocalDate.now(), ActivityType.AIRHOCKEY, 1),
-                new Activity(LocalTime.of(15, 0), LocalTime.of(17, 0), LocalDate.now(), ActivityType.BOWLING, 1),
-                new Activity(LocalTime.of(17, 0), LocalTime.of(19, 0), LocalDate.now(), ActivityType.DINING, 1),
-                new Activity(LocalTime.of(19, 0), LocalTime.of(21, 0), LocalDate.now(), ActivityType.AIRHOCKEY, 1)
-        );
+
+        List<Activity> activities = new ArrayList<>();
+        for (int i = 0; i < 11; i++) {
+            for (int j = 0; j < 28; j++) {
+                int k = i % 2 == 0 ? 1 : 2;
+                for (int l = 0; l < 4; l++) {
+                    bowlingActivities.add(new Activity(LocalTime.of(10 + i, 0), LocalTime.of(10 + i + k, 0), LocalDate.of(2024, 5, 1 + j), ActivityType.BOWLING, 1));
+                    diningActivities.add(new Activity(LocalTime.of(10 + i, 0), LocalTime.of(10 + i + k, 0), LocalDate.of(2024, 5, 1 + j), ActivityType.DINING, 1));
+                }
+                childBowlingActivities.add(new Activity(LocalTime.of(10 + i, 0), LocalTime.of(10 + i + k, 0), LocalDate.now(), ActivityType.CHILDBOWLING, 1));
+                airhockeyActivities.add(new Activity(LocalTime.of(10 + i, 0), LocalTime.of(10 + i + k, 0), LocalDate.of(2024, 5, 1 + j), ActivityType.AIRHOCKEY, 1));
+            }
+        }
+
+        activities.addAll(bowlingActivities);
+        activities.addAll(childBowlingActivities);
+        activities.addAll(diningActivities);
+        activities.addAll(airhockeyActivities);
 
         activityRepository.saveAll(activities);
     }
+
     public void initReservations() {
-        List<Activity> activities = activityRepository.findAll();
-        Random random = new Random();
+        List<Reservation> reservations = new ArrayList<>();
 
-        Reservation reservation1 = new Reservation();
-        reservation1.setPhoneNumber("123-456-7891");
-        reservation1.setName("Alice Johnson");
-        reservation1.setParticipants(random.nextInt(5) + 1);
-        reservation1.setActivities(activities.subList(0, 2));
-
-        Reservation reservation2 = new Reservation();
-        reservation2.setPhoneNumber("123-456-7892");
-        reservation2.setName("Bob Smith");
-        reservation2.setParticipants(random.nextInt(5) + 1);
-        reservation2.setActivities(activities.subList(2, 4));
-
-        Reservation reservation3 = new Reservation();
-        reservation3.setPhoneNumber("123-456-7893");
-        reservation3.setName("Charlie Brown");
-        reservation3.setParticipants(random.nextInt(5) + 1);
-        reservation3.setActivities(activities.subList(4, 6));
-
-
-        List<Reservation> reservations = Arrays.asList(reservation1, reservation2, reservation3);
+        for (int i = 0; i < bowlingActivities.size(); i++) {
+            reservations.add(new Reservation("12345678", "Mr Qi", 4, List.of(bowlingActivities.get(i), diningActivities.get(i))));
+        }
+        for (int i = 0; i < childBowlingActivities.size(); i++) {
+            reservations.add(new Reservation("12345678", "Rødover Fritidshjem", 4, List.of(childBowlingActivities.get(i), airhockeyActivities.get(i))));
+        }
         reservationRepository.saveAll(reservations);
     }
 
     private void initBowlingLanes() {
         List<BowlingLane> tempLanes = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
-            tempLanes.add(new BowlingLane(false, i > 19, i + 1));
+            tempLanes.add(new BowlingLane(false, i > 19, i + 1, i > 19 ? ActivityType.CHILDBOWLING : ActivityType.BOWLING));
         }
         bowlingLanes.addAll(bowlingLaneRepository.saveAll(tempLanes));
     }

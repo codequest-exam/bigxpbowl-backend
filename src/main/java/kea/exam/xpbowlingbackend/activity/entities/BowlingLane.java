@@ -23,14 +23,14 @@ public class BowlingLane {
     private boolean childFriendly;
 
     @Enumerated(EnumType.STRING)
-    private ActivityType activityType = ActivityType.BOWLING;
+    private ActivityType activityType;
 
 
-    public BowlingLane(boolean maintenance, boolean childFriendly, int laneNumber ) {
+    public BowlingLane(boolean maintenance, boolean childFriendly, int laneNumber, ActivityType activityType) {
         this.maintenance =maintenance;
         this.childFriendly = childFriendly;
-
         this.laneNumber = laneNumber;
+        this.activityType = activityType;
     }
 
 
