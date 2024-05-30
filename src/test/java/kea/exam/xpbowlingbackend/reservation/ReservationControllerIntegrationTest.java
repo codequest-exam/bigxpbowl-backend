@@ -21,7 +21,7 @@ public class ReservationControllerIntegrationTest {
 
     @Test
     public void getAllReservationsReturnsAllReservations() {
-        ResponseEntity<ReservationResponseDTO[]> response = restTemplate.getForEntity("/reservations", ReservationResponseDTO[].class);
+        ResponseEntity<ReservationResponseDTO[]> response = restTemplate.getForEntity("/reservations/all", ReservationResponseDTO[].class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotEmpty();

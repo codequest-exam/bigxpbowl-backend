@@ -46,7 +46,7 @@ class ReservationControllerTest {
         ReservationResponseDTO reservation2 = new ReservationResponseDTO(2, "Reservation 2", "987654321", 5, LocalDate.now(), LocalTime.now(), LocalTime.now(), List.of("Activity 3"));
         when(reservationService.getAllReservations()).thenReturn(Arrays.asList(reservation1, reservation2));
 
-        mockMvc.perform(get("/reservations"))
+        mockMvc.perform(get("/reservations/all"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[0].id").value(1))
